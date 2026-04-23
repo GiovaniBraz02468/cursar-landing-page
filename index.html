@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursar.me | Sua Jornada Organizada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              dark: '#050510',
+              card: '#0d0c22',
+              brand: '#7047eb',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #050510; color: white; font-family: 'Inter', sans-serif; margin: 0; }
+      .text-gradient { background: linear-gradient(to right, #b06eff, #da59ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .pricing-orange { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
+      .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
