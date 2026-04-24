@@ -124,14 +124,14 @@ export default function ModuleModal({ module: mod, onClose }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
       />
 
       {isMobile ? (
         /* ── Mobile: bottom sheet ── */
         <div
           key="mobile-wrapper"
-          style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 51 }}
+          style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 201 }}
           onClick={(e) => e.stopPropagation()}
         >
           <motion.div
@@ -148,7 +148,7 @@ export default function ModuleModal({ module: mod, onClose }) {
         /* ── Desktop: centralizado ── */
         <div
           key="desktop-wrapper"
-          style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 51, width: '100%', maxWidth: '32rem', padding: '0 1rem' }}
+          style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 201, width: '100%', maxWidth: '32rem', padding: '0 1rem' }}
           onClick={(e) => e.stopPropagation()}
         >
           <motion.div
