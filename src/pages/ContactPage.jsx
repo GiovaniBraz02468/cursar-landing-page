@@ -100,7 +100,7 @@ function AccordionItem({ question, answer, isOpen, onToggle, icon: Icon, color }
           transition={{ duration: 0.18 }}
           style={{ padding: '0 1.125rem 1.125rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.75, paddingTop: '0.875rem' }}>
+          <p style={{ fontSize: '0.875rem', color: '#94a3b8', lineHeight: 1.75, paddingTop: '0.875rem' }}>
             {answer}
           </p>
         </motion.div>
@@ -155,7 +155,7 @@ export default function ContactPage() {
             <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.08, marginBottom: '0.75rem' }}>
               Suporte & Contato
             </h1>
-            <p style={{ color: '#64748b', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
+            <p style={{ color: '#94a3b8', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
               Tem alguma dúvida ou precisa de ajuda? A gente responde rápido.
             </p>
           </motion.div>
@@ -187,7 +187,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>Suporte WhatsApp</p>
-                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Atendimento direto</p>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Atendimento direto</p>
                 </div>
               </div>
               <ArrowRight size={15} style={{ color: '#34d399', flexShrink: 0 }} />
@@ -206,7 +206,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>E-mail Suporte</p>
-                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#475569' }}>suporte@cursar.me</p>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8' }}>suporte@cursar.me</p>
                 </div>
               </div>
               <ArrowRight size={15} style={{ color: '#60a5fa', flexShrink: 0 }} />
@@ -256,7 +256,7 @@ export default function ContactPage() {
             transition={{ delay: 0.2 }}
             style={{ textAlign: 'center', marginTop: '3.5rem', padding: '2rem', borderRadius: '1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
-            <p style={{ color: '#64748b', fontSize: '0.875rem', marginBottom: '1rem' }}>
+            <p style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '1rem' }}>
               Ainda não tem uma conta? É grátis para começar.
             </p>
             <a

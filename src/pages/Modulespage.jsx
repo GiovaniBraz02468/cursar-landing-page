@@ -93,9 +93,9 @@ export default function ModulesPage() {
           </div>
           <h1 style={{ fontSize: 'clamp(1.2rem, 5vw, 2.75rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', marginBottom: '0.75rem' }}>
             Cada área da sua vida,{' '}
-            <span style={{ color: '#475569' }}>com a ferramenta certa.</span>
+            <span style={{ color: '#64748b' }}>com a ferramenta certa.</span>
           </h1>
-          <p style={{ color: '#64748b', fontSize: '0.8125rem' }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.8125rem' }}>
             Clique em um card para ver mais sobre esse módulo.
           </p>
         </motion.div>
@@ -181,7 +181,7 @@ export default function ModulesPage() {
                 <Clock size={24} style={{ color: areaMeta.color }} strokeWidth={1.5} />
               </div>
               <p style={{ fontSize: '1rem', fontWeight: 800, color: '#e2e8f0', marginBottom: '0.5rem' }}>Em planejamento</p>
-              <p style={{ fontSize: '0.8125rem', color: '#475569', maxWidth: '22rem', margin: '0 auto' }}>
+              <p style={{ fontSize: '0.8125rem', color: '#94a3b8', maxWidth: '22rem', margin: '0 auto' }}>
                 {areaInfo.description}
               </p>
             </motion.div>
@@ -254,7 +254,7 @@ export default function ModulesPage() {
           transition={{ delay: 0.2 }}
           style={{ textAlign: 'center', marginTop: '3.5rem' }}
         >
-          <p style={{ color: '#475569', fontSize: '0.75rem', marginBottom: '1rem' }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.75rem', marginBottom: '1rem' }}>
             Todos disponíveis gratuitamente para começar.
           </p>
           <a

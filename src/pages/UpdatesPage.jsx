@@ -78,7 +78,7 @@ export default function UpdatesPage() {
           <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.08, marginBottom: '0.75rem' }}>
             Atualizações
           </h1>
-          <p style={{ color: '#64748b', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
             Cada versão, cada melhoria, cada novidade. Acompanhe a evolução do Cursar.me.
           </p>
         </motion.div>
@@ -118,10 +118,10 @@ export default function UpdatesPage() {
                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${featured.badgeColor}`}>
                   {featured.badge}
                 </span>
-                <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', color: '#475569', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: 6 }}>
+                <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', color: '#94a3b8', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: 6 }}>
                   v{featured.version}
                 </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#475569', marginLeft: 'auto' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}>
                   <Calendar size={10} />
                   {formatDate(featured.date)}
                 </span>
@@ -152,7 +152,7 @@ export default function UpdatesPage() {
           style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}
         >
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
-          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#334155' }}>Versões anteriores</span>
+          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8' }}>Versões anteriores</span>
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
         </motion.div>
 
@@ -185,8 +185,8 @@ export default function UpdatesPage() {
                       <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${update.badgeColor}`}>
                         {update.badge}
                       </span>
-                      <span style={{ fontSize: '0.65rem', fontFamily: 'monospace', color: '#475569' }}>v{update.version}</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: '0.65rem', color: '#334155', marginLeft: 'auto' }}>
+                      <span style={{ fontSize: '0.65rem', fontFamily: 'monospace', color: '#94a3b8' }}>v{update.version}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: '0.65rem', color: '#94a3b8', marginLeft: 'auto' }}>
                         <Calendar size={9} /> {formatDate(update.date)}
                       </span>
                     </div>
@@ -194,13 +194,13 @@ export default function UpdatesPage() {
                     <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#e2e8f0', lineHeight: 1.3, marginBottom: '0.5rem' }}>
                       {update.title}
                     </h3>
-                    <p style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.6, marginBottom: '0.875rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '0.875rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {update.summary}
                     </p>
 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <ChangeCounts changes={update.changes} />
-                      <ArrowRight size={13} style={{ color: '#334155', flexShrink: 0 }} />
+                      <ArrowRight size={13} style={{ color: '#94a3b8', flexShrink: 0 }} />
                     </div>
                   </div>
                 </Link>

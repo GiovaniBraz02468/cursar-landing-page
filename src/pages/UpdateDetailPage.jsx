@@ -86,7 +86,7 @@ export default function UpdateDetailPage() {
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
           <Link
             to="/atualizacoes"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: '#475569', textDecoration: 'none', marginBottom: '2rem', transition: 'color 0.2s' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: '#94a3b8', textDecoration: 'none', marginBottom: '2rem', transition: 'color 0.2s' }}
             onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#475569'; }}
           >
@@ -114,10 +114,10 @@ export default function UpdateDetailPage() {
             <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${update.badgeColor}`}>
               {update.badge}
             </span>
-            <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', color: '#475569', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: 6 }}>
+            <span style={{ fontSize: '0.7rem', fontFamily: 'monospace', color: '#94a3b8', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: 6 }}>
               v{update.version}
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#475569', marginLeft: 'auto' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}>
               <Calendar size={10} /> {formatDate(update.date)}
             </span>
           </div>
@@ -133,8 +133,8 @@ export default function UpdateDetailPage() {
           {/* Share bar */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.875rem 1rem', borderRadius: '0.875rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#334155', marginBottom: '0.25rem' }}>Link desta atualização</p>
-              <p style={{ fontSize: '0.75rem', color: '#475569', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shareUrl}</p>
+              <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>Link desta atualização</p>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shareUrl}</p>
             </div>
             <button
               onClick={copyLink}
@@ -169,7 +169,7 @@ export default function UpdateDetailPage() {
                     <Icon size={13} style={{ color: t.color }} strokeWidth={2} />
                   </div>
                   <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: t.color }}>{t.label}</span>
-                  <span style={{ fontSize: '0.7rem', color: '#334155', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '1px 7px', borderRadius: 999 }}>{items.length}</span>
+                  <span style={{ fontSize: '0.7rem', color: '#94a3b8', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '1px 7px', borderRadius: 999 }}>{items.length}</span>
                   <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.05)' }} />
                 </div>
 
@@ -195,8 +195,8 @@ export default function UpdateDetailPage() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
             {prev ? (
               <Link to={`/atualizacoes/${prev.id}`} style={{ textDecoration: 'none', maxWidth: '45%' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#334155', marginBottom: '0.25rem' }}>← Anterior</p>
-                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748b', transition: 'color 0.2s' }}
+                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>← Anterior</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
                 >{prev.title}</p>
@@ -204,8 +204,8 @@ export default function UpdateDetailPage() {
             ) : <div />}
             {next ? (
               <Link to={`/atualizacoes/${next.id}`} style={{ textDecoration: 'none', maxWidth: '45%', textAlign: 'right' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#334155', marginBottom: '0.25rem' }}>Próxima →</p>
-                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748b', transition: 'color 0.2s' }}
+                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>Próxima →</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
                 >{next.title}</p>
@@ -216,7 +216,7 @@ export default function UpdateDetailPage() {
 
         {/* CTA final */}
         <div style={{ marginTop: '3rem', textAlign: 'center', padding: '2rem', borderRadius: '1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1rem' }}>Quer aproveitar tudo isso?</p>
+          <p style={{ fontSize: '0.875rem', color: '#94a3b8', marginBottom: '1rem' }}>Quer aproveitar tudo isso?</p>
           <a
             href="https://app.cursar.me/register"
             target="_blank"

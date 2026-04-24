@@ -461,8 +461,8 @@ export default function HomePage() {
   const half = Math.ceil(MODULES.length / 2);
   const modulesA = MODULES.slice(0, half);
   const modulesB = MODULES.slice(half);
-  const carouselA = [...modulesA, ...modulesA];
-  const carouselB = [...modulesB, ...modulesB];
+  const carouselA = [...modulesA, ...modulesA, ...modulesA, ...modulesA];
+  const carouselB = [...modulesB, ...modulesB, ...modulesB, ...modulesB];
 
 
   return (
@@ -597,7 +597,7 @@ export default function HomePage() {
 
           <motion.p
             variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-            className="mt-8 text-xs text-slate-600 font-medium"
+            className="mt-8 text-xs text-slate-400 font-medium"
           >
             Gratuito para começar · Sem cartão de crédito · Upgrade quando quiser
           </motion.p>
@@ -608,7 +608,10 @@ export default function HomePage() {
       {/* ── 2. MODULES CAROUSEL ──────────────────────────────────────────────── */}
       <section className="py-10 overflow-hidden">
         <InView className="text-center mb-12 px-6 sm:px-8">
-          <p className="text-xs font-black uppercase tracking-[0.4em] text-slate-600 mb-3">Módulos</p>
+          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+            <Sparkles size={12} />
+            O que você ganha
+          </div>
           <h2
             className="text-3xl sm:text-4xl font-black tracking-tight"
             
@@ -658,7 +661,7 @@ export default function HomePage() {
 
           {/* Row 2 — right */}
           <div className="overflow-hidden">
-            <div className="carousel-track-right flex">
+            <div className="carousel-track-right flex" style={{ transform: 'translateX(-50%)' }}>
               {carouselB.map((mod, i) => {
                 const Icon = LucideIcons[mod.icon] || LucideIcons.Layers;
                 return (
@@ -794,7 +797,10 @@ export default function HomePage() {
       <section id="precos" className="relative py-24 px-6 sm:px-8" style={{ scrollMarginTop: '80px' }}>
         <div className="max-w-4xl mx-auto">
           <InView className="text-center mb-16">
-            <p className="text-xs font-black uppercase tracking-[0.4em] text-slate-600 mb-3">Planos</p>
+            <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+              <Sparkles size={12} />
+              Planos
+            </div>
             <h2
               className="text-3xl sm:text-4xl font-black tracking-tight mb-4"
               
@@ -848,7 +854,7 @@ export default function HomePage() {
                   {plan.otherPrices && (
                     <div className="flex gap-3 mt-2">
                       {plan.otherPrices.map((op, j) => (
-                        <span key={j} className="text-xs text-slate-600">
+                        <span key={j} className="text-xs text-slate-400">
                           {op.label}: <span className="text-slate-500">{op.price}</span>
                         </span>
                       ))}
@@ -948,7 +954,7 @@ export default function HomePage() {
               Criar minha conta grátis
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </a>
-            <p className="mt-6 text-xs text-slate-700">
+            <p className="mt-6 text-xs text-slate-400">
               Sem cartão de crédito · Cancele quando quiser · Seus dados são seus
             </p>
           </InView>
@@ -1003,11 +1009,13 @@ export default function HomePage() {
         }
         .carousel-track-left {
           width: max-content;
-          animation: carouselLeft 40s linear infinite;
+          animation: carouselLeft 60s linear infinite;
+          will-change: transform;
         }
         .carousel-track-right {
           width: max-content;
-          animation: carouselRight 44s linear infinite;
+          animation: carouselRight 60s linear infinite;
+          will-change: transform;
         }
       `}</style>
     </div>
