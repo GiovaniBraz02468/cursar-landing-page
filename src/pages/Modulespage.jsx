@@ -1,167 +1,249 @@
 // pages/ModulesPage.jsx
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
-import { Clock } from 'lucide-react';
+import { GraduationCap, Users, Dumbbell, Sparkles, Clock, ArrowRight, Layers } from 'lucide-react';
 import { MODULES, MODULE_AREAS } from '../data/modulesData';
 import ModuleModal from '../components/ModuleModal';
 
 const AREA_ORDER = ['estudantil', 'social', 'fitness', 'pessoal'];
 
-const AREA_COLORS = {
-  estudantil: { active: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30', dot: 'bg-indigo-400' },
-  social:     { active: 'bg-pink-500/15 text-pink-300 border-pink-500/30',       dot: 'bg-pink-400' },
-  fitness:    { active: 'bg-green-500/15 text-green-300 border-green-500/30',     dot: 'bg-green-400' },
-  pessoal:    { active: 'bg-amber-500/15 text-amber-300 border-amber-500/30',     dot: 'bg-amber-400' },
+const AREA_META = {
+  estudantil: {
+    Icon: GraduationCap,
+    color: '#818cf8',
+    border: 'rgba(99,102,241,0.4)',
+    activeBg: 'rgba(99,102,241,0.1)',
+    glow: '0 0 24px rgba(99,102,241,0.25)',
+  },
+  social: {
+    Icon: Users,
+    color: '#f472b6',
+    border: 'rgba(236,72,153,0.4)',
+    activeBg: 'rgba(236,72,153,0.1)',
+    glow: '0 0 24px rgba(236,72,153,0.2)',
+  },
+  fitness: {
+    Icon: Dumbbell,
+    color: '#4ade80',
+    border: 'rgba(34,197,94,0.4)',
+    activeBg: 'rgba(34,197,94,0.1)',
+    glow: '0 0 24px rgba(34,197,94,0.2)',
+  },
+  pessoal: {
+    Icon: Sparkles,
+    color: '#fbbf24',
+    border: 'rgba(245,158,11,0.4)',
+    activeBg: 'rgba(245,158,11,0.1)',
+    glow: '0 0 24px rgba(245,158,11,0.2)',
+  },
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 14 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
 };
-const stagger = { show: { transition: { staggerChildren: 0.07 } } };
+const stagger = { show: { transition: { staggerChildren: 0.045 } } };
 
 export default function ModulesPage() {
-  const [activeArea, setActiveArea] = useState('estudantil');
+  const [activeArea, setActiveArea]     = useState('estudantil');
   const [selectedModule, setSelectedModule] = useState(null);
+  const [isMobile, setIsMobile]         = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const filtered = MODULES.filter((m) => m.area === activeArea);
   const areaInfo = MODULE_AREAS[activeArea];
+  const areaMeta = AREA_META[activeArea];
 
   return (
-    <div className="min-h-screen bg-[#080718] text-white pt-24 pb-20 px-4">
-      <div className="max-w-5xl mx-auto">
+    <>
+    <Helmet>
+      <title>Módulos | Cursar.me</title>
+      <meta name="description" content="Explore todos os módulos do Cursar.me: Trabalhos com Scrum, Portfólio, Documento, Rede social, Mensagens e muito mais. Tudo grátis para começar." />
+      <link rel="canonical" href="https://cursar.me/modulos" />
+      <meta property="og:url"         content="https://cursar.me/modulos" />
+      <meta property="og:title"       content="Módulos | Cursar.me" />
+      <meta property="og:description" content="Explore todos os módulos do Cursar.me: Trabalhos com Scrum, Portfólio, Documento, Rede social, Mensagens e muito mais." />
+    </Helmet>
+    <div style={{ minHeight: '100vh', background: '#080718', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+
+      {/* Glow de fundo */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '600px', pointerEvents: 'none', zIndex: 0 }}>
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '900px', height: '500px', background: 'radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.14) 0%, rgba(129,140,248,0.06) 50%, transparent 70%)' }} />
+      </div>
+
+      <div style={{ maxWidth: '52rem', margin: '0 auto', padding: '5rem 1rem 5rem', position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          style={{ textAlign: 'center', marginBottom: '2.5rem' }}
         >
-          <p className="text-xs font-black uppercase tracking-[0.4em] text-slate-600 mb-3">Módulos</p>
-          <h1
-            className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
-            style={{ fontFamily: "'Syne', sans-serif" }}
-          >
-            Cada área da sua vida,<br />
-            <span className="text-slate-500">com a ferramenta certa.</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.22)', color: '#818cf8', fontSize: '0.75rem', fontWeight: 600, padding: '0.375rem 0.875rem', borderRadius: 999, marginBottom: '1.25rem' }}>
+            <Layers size={11} />
+            Plataforma completa
+          </div>
+          <h1 style={{ fontSize: 'clamp(1.2rem, 5vw, 2.75rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', marginBottom: '0.75rem' }}>
+            Cada área da sua vida,{' '}
+            <span style={{ color: '#475569' }}>com a ferramenta certa.</span>
           </h1>
-          <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
-            Explore os módulos por área. Clique em qualquer um para ver funcionalidades, limites e detalhes.
+          <p style={{ color: '#64748b', fontSize: '0.8125rem' }}>
+            Clique em um card para ver mais sobre esse módulo.
           </p>
         </motion.div>
 
-        {/* Tabs */}
+        {/* Seletor 2×2 */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="flex flex-wrap gap-2 justify-center mb-12"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.625rem', marginBottom: '2rem' }}
         >
           {AREA_ORDER.map((areaKey) => {
-            const area = MODULE_AREAS[areaKey];
+            const area     = MODULE_AREAS[areaKey];
+            const meta     = AREA_META[areaKey];
             const isActive = activeArea === areaKey;
-            const colors = AREA_COLORS[areaKey];
+            const count    = MODULES.filter((m) => m.area === areaKey && !m.soon).length;
+            const { Icon } = meta;
+
             return (
               <button
                 key={areaKey}
                 onClick={() => setActiveArea(areaKey)}
-                className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm font-semibold border transition-all duration-200 ${
-                  isActive
-                    ? colors.active
-                    : 'bg-white/[0.03] text-slate-500 border-white/5 hover:bg-white/[0.06] hover:text-slate-300'
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: isMobile ? '0.75rem' : '0.875rem 1.125rem',
+                  borderRadius: '0.875rem',
+                  border: `1px solid ${isActive ? meta.border : 'rgba(255,255,255,0.07)'}`,
+                  background: isActive ? meta.activeBg : 'rgba(255,255,255,0.02)',
+                  boxShadow: isActive ? meta.glow : 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s ease',
+                }}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? colors.dot : 'bg-slate-600'}`} />
-                {area.label}
-                {area.soon && (
-                  <span className="text-[9px] font-black uppercase tracking-widest bg-amber-500/15 text-amber-500 px-1.5 py-0.5 rounded-full ml-1">
-                    Em breve
-                  </span>
-                )}
+                {/* Ícone da área */}
+                <div style={{
+                  width: isMobile ? 34 : 38, height: isMobile ? 34 : 38,
+                  borderRadius: '0.625rem',
+                  background: isActive ? `${meta.color}22` : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${isActive ? `${meta.color}40` : 'rgba(255,255,255,0.06)'}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  transition: 'all 0.2s',
+                }}>
+                  <Icon size={isMobile ? 15 : 17} style={{ color: isActive ? meta.color : '#64748b' }} strokeWidth={1.75} />
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: isMobile ? '0.8rem' : '0.875rem', fontWeight: 800, color: isActive ? '#f1f5f9' : '#94a3b8', lineHeight: 1 }}>
+                      {area.label}
+                    </span>
+                    {area.soon && (
+                      <span style={{ fontSize: 7, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em', background: 'rgba(245,158,11,0.12)', color: '#f59e0b', padding: '2px 5px', borderRadius: 999 }}>
+                        Em breve
+                      </span>
+                    )}
+                  </div>
+                  {!area.soon && (
+                    <p style={{ fontSize: '0.65rem', color: isActive ? meta.color : '#475569', fontWeight: 600, marginTop: '0.125rem', transition: 'color 0.2s' }}>
+                      {count} {count === 1 ? 'módulo' : 'módulos'}
+                    </p>
+                  )}
+                </div>
               </button>
             );
           })}
         </motion.div>
 
-        {/* Area description */}
+        {/* Conteúdo da área */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={activeArea + '-desc'}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="text-center mb-10"
-          >
-            <p className="text-slate-500 text-sm">{areaInfo.description}</p>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Modules grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeArea}
-            initial="hidden"
-            animate="show"
-            exit="hidden"
-            variants={stagger}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            {filtered.map((mod) => {
-              const IconComponent = Icons[mod.icon] || Icons.Layers;
-              return (
-                <motion.button
-                  key={mod.id}
-                  variants={fadeUp}
-                  onClick={() => !mod.soon && setSelectedModule(mod)}
-                  whileHover={!mod.soon ? { scale: 1.02, y: -4 } : {}}
-                  whileTap={!mod.soon ? { scale: 0.98 } : {}}
-                  className={`group text-left p-6 rounded-3xl border transition-all duration-300 w-full ${
-                    mod.soon
-                      ? 'bg-white/[0.02] border-white/5 opacity-60 cursor-default'
-                      : `bg-white/[0.03] ${mod.border} hover:bg-white/[0.06] cursor-pointer`
-                  }`}
-                >
-                  {/* Glow on hover */}
-                  {!mod.soon && (
+          {areaInfo.soon ? (
+            <motion.div
+              key={activeArea + '-soon'}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              style={{ textAlign: 'center', padding: '4rem 1rem' }}
+            >
+              <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 56, height: 56, borderRadius: '1rem', background: `${areaMeta.color}15`, border: `1px solid ${areaMeta.color}30`, marginBottom: '1rem' }}>
+                <Clock size={24} style={{ color: areaMeta.color }} strokeWidth={1.5} />
+              </div>
+              <p style={{ fontSize: '1rem', fontWeight: 800, color: '#e2e8f0', marginBottom: '0.5rem' }}>Em planejamento</p>
+              <p style={{ fontSize: '0.8125rem', color: '#475569', maxWidth: '22rem', margin: '0 auto' }}>
+                {areaInfo.description}
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={activeArea}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={stagger}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+                gap: isMobile ? '0.5rem' : '0.75rem',
+              }}
+            >
+              {filtered.map((mod) => {
+                const IconComp = Icons[mod.icon] || Icons.Layers;
+                return (
+                  <motion.button
+                    key={mod.id}
+                    variants={fadeUp}
+                    onClick={() => setSelectedModule(mod)}
+                    whileTap={{ scale: 0.97 }}
+                    className={`text-left rounded-2xl border ${mod.border}`}
+                    style={{
+                      padding: isMobile ? '0.75rem' : '1rem',
+                      background: 'rgba(255,255,255,0.02)',
+                      cursor: 'pointer',
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      textAlign: 'center',
+                      transition: 'background 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.boxShadow = `0 0 20px ${mod.glow}`; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    {/* Ícone */}
                     <div
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                      style={{ background: `radial-gradient(circle at top left, ${mod.glow || 'rgba(129,140,248,0.08)'}, transparent 60%)` }}
-                    />
-                  )}
-
-                  <div className="relative">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${mod.bg} border ${mod.border}`}>
-                        <IconComponent size={24} className={mod.color} strokeWidth={1.5} />
-                      </div>
-                      {mod.soon ? (
-                        <span className="flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
-                          <Clock size={10} />
-                          Em breve
-                        </span>
-                      ) : (
-                        <span className={`text-[10px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity ${mod.color}`}>
-                          Ver mais →
-                        </span>
-                      )}
+                      className={`rounded-xl flex items-center justify-center ${mod.bg} border ${mod.border}`}
+                      style={{ width: isMobile ? 32 : 38, height: isMobile ? 32 : 38, flexShrink: 0 }}
+                    >
+                      <IconComp size={isMobile ? 14 : 17} className={mod.color} strokeWidth={1.5} />
                     </div>
 
-                    <h3
-                      className="text-base font-black text-white mb-1.5"
-                      style={{ fontFamily: "'Syne', sans-serif" }}
-                    >
+                    {/* Nome */}
+                    <span style={{ fontSize: isMobile ? '0.75rem' : '0.8125rem', fontWeight: 800, color: '#f1f5f9', lineHeight: 1.2 }}>
                       {mod.title}
-                    </h3>
-                    <p className={`text-xs font-semibold mb-3 ${mod.color}`}>{mod.tagline}</p>
-                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-3">{mod.description}</p>
-                  </div>
-                </motion.button>
-              );
-            })}
-          </motion.div>
+                    </span>
+
+                    {/* Ver mais */}
+                    <span className={`text-[10px] font-bold ${mod.color}`} style={{ opacity: 0.85 }}>
+                      Ver mais →
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Bottom CTA */}
@@ -169,27 +251,34 @@ export default function ModulesPage() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-20"
+          transition={{ delay: 0.2 }}
+          style={{ textAlign: 'center', marginTop: '3.5rem' }}
         >
-          <p className="text-slate-500 text-sm mb-6">Todos esses módulos disponíveis gratuitamente para começar.</p>
+          <p style={{ color: '#475569', fontSize: '0.75rem', marginBottom: '1rem' }}>
+            Todos disponíveis gratuitamente para começar.
+          </p>
           <a
             href="https://app.cursar.me/register"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-sm font-bold text-white transition-all hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/20"
-            style={{ background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.875rem 1.75rem', borderRadius: '0.875rem',
+              fontSize: '0.875rem', fontWeight: 700, color: '#fff',
+              textDecoration: 'none',
+              background: 'linear-gradient(135deg, #818cf8, #c084fc)',
+            }}
           >
             Criar conta grátis
-            <Icons.ArrowRight size={15} />
+            <ArrowRight size={14} />
           </a>
         </motion.div>
       </div>
 
-      {/* Modal */}
       {selectedModule && (
         <ModuleModal module={selectedModule} onClose={() => setSelectedModule(null)} />
       )}
     </div>
+    </>
   );
 }

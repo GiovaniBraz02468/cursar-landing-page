@@ -1,6 +1,25 @@
 // pages/HomePage.jsx
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import imgTrabalho   from '../assets/trabalho.png';
+import imgTrabalho2  from '../assets/trabalho2.png';
+import imgTrabalho3  from '../assets/trabalho3.png';
+import imgTrabalho4  from '../assets/trabalho4.png';
+import imgPortfolio  from '../assets/portfolio.png';
+import imgPortfolio2 from '../assets/portfolio2.png';
+import imgPortfolio3 from '../assets/portfolio3.png';
+import imgPortfolio4 from '../assets/portfolio4.png';
+import imgDoc  from '../assets/doc.png';
+import imgDoc2 from '../assets/doc2.png';
+import imgDoc3 from '../assets/doc3.png';
+import imgDoc4 from '../assets/doc4.png';
+import imgSocial  from '../assets/social.png';
+import imgSocial2 from '../assets/social2.png';
+import imgSocial3 from '../assets/social3.png';
+import imgSocial4 from '../assets/social4.png';
+import imgSocial5 from '../assets/social5.png';
+import imgSocial6 from '../assets/social6.png';
+import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import {
@@ -271,6 +290,35 @@ function ProfileMockup() {
   );
 }
 
+// ── Carousel de imagens ───────────────────────────────────────────────────────
+function ImageCarousel({ images }) {
+  const [current, setCurrent] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setCurrent((c) => (c + 1) % images.length), 3000);
+    return () => clearInterval(t);
+  }, [images.length]);
+  return (
+    <div style={{ position: 'relative' }}>
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          style={{
+            display: 'block',
+            width: '100%',
+            objectFit: 'cover',
+            position: i === 0 ? 'relative' : 'absolute',
+            top: 0, left: 0,
+            height: i === 0 ? 'auto' : '100%',
+            opacity: i === current ? 1 : 0,
+            transition: 'opacity 0.7s ease-in-out',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 // ── Feature sections config ──────────────────────────────────────────────────
 const FEATURE_SECTIONS = [
   {
@@ -285,14 +333,15 @@ const FEATURE_SECTIONS = [
     border: 'border-emerald-500/20',
     accentRgb: '16,185,129',
     features: [
-      { icon: Layout,        text: 'Kanban e Scrum com Sprints e backlog' },
+      { icon: Layout,        text: 'Scrum com Sprints e backlog' },
       { icon: Users,         text: 'Membros e responsáveis por cartão' },
-      { icon: Paperclip,     text: 'Mochila: recursos e anexos centralizados' },
-      { icon: MessageSquare, text: 'Mural: chat de grupo com enquetes' },
+      { icon: Paperclip,     text: 'Recursos e anexos centralizados' },
+      { icon: MessageSquare, text: 'chat de grupo com enquetes' },
       { icon: CheckSquare,   text: 'Cartões com prioridades e checklists' },
     ],
     limit: { free: '2 trabalhos simultâneos', pro: 'Trabalhos ilimitados' },
-    imgSrc: '/screenshots/trabalhos.png',
+    imgSrc: imgTrabalho,
+    images: [imgTrabalho, imgTrabalho2, imgTrabalho3, imgTrabalho4],
   },
   {
     id: 'portfolio',
@@ -313,7 +362,9 @@ const FEATURE_SECTIONS = [
       { icon: Tag,    text: 'Tags e filtros para seus cases' },
     ],
     limit: { free: '5 projetos (3 públicos)', pro: 'Projetos ilimitados' },
-    imgSrc: '/screenshots/portfolio.png',
+    imgSrc: imgPortfolio,
+    images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
+    images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
   },
   {
     id: 'documento',
@@ -328,13 +379,14 @@ const FEATURE_SECTIONS = [
     accentRgb: '6,182,212',
     features: [
       { icon: FileText, text: 'Editor em blocos com paginação' },
-      { icon: Layout,   text: 'Sumário automático para navegação' },
+      { icon: Layout,   text: 'Sumário para navegação' },
       { icon: Link2,    text: 'Link público compartilhável' },
       { icon: Heart,    text: 'Curtidas da comunidade' },
       { icon: Eye,      text: 'Capa personalizada' },
     ],
     limit: { free: 'Disponível em múltiplas áreas', pro: 'Recursos avançados desbloqueados' },
-    imgSrc: '/screenshots/documento.png',
+    imgSrc: imgDoc,
+    images: [imgDoc, imgDoc2, imgDoc3, imgDoc4],
   },
   {
     id: 'perfil',
@@ -354,7 +406,8 @@ const FEATURE_SECTIONS = [
       { icon: Eye,     text: 'Visibilidade configurável por seção' },
     ],
     limit: { free: 'Perfil público completo', pro: 'Visitantes revelados + conexões ilimitadas' },
-    imgSrc: '/screenshots/perfil.png',
+    imgSrc: imgSocial,
+    images: [imgSocial, imgSocial2, imgSocial3, imgSocial4, imgSocial5, imgSocial6],
   },
 ];
 
@@ -411,14 +464,17 @@ export default function HomePage() {
   const carouselA = [...modulesA, ...modulesA];
   const carouselB = [...modulesB, ...modulesB];
 
-  const [showScrollHint, setShowScrollHint] = useState(true);
-  useEffect(() => {
-    const onScroll = () => { if (window.scrollY > 8) setShowScrollHint(false); };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
+    <>
+    <Helmet>
+      <title>Cursar.me — Organize sua vida estudantil, social e profissional</title>
+      <meta name="description" content="A plataforma que une trabalhos com Scrum, portfólio, documentos, rede social e fitness em um único lugar. Crie sua conta grátis." />
+      <link rel="canonical" href="https://cursar.me/" />
+      <meta property="og:url"   content="https://cursar.me/" />
+      <meta property="og:title" content="Cursar.me — Organize sua vida estudantil, social e profissional" />
+      <meta property="og:description" content="A plataforma que une trabalhos com Scrum, portfólio, documentos, rede social e fitness em um único lugar. Crie sua conta grátis." />
+    </Helmet>
     <div
       className="min-h-screen text-white overflow-x-hidden relative"
       style={{ background: '#0a091e' }}
@@ -463,7 +519,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-8"
           >
             <Sparkles size={12} />
-            Plataforma All-in-One para estudantes e profissionais
+            Plataforma All-in-One
           </motion.div>
 
           <motion.h1
@@ -491,30 +547,52 @@ export default function HomePage() {
             className="text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto"
             style={{ fontSize: 'clamp(0.95rem, 2vw, 1.125rem)' }}
           >
-            Pare de usar 10 ferramentas diferentes. O Cursar.me reúne estudos, portfólio, projetos em equipe,
-            currículo, rede profissional e armazenamento — tudo integrado, tudo bonito.
+            Chega de 10 abas abertas. O Cursar.me reúne estudos, portfólio, projetos em equipe e currículo — tudo integrado.
           </motion.p>
 
           <motion.div
             variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center' }}
           >
+            {/* Começar grátis */}
             <a
               href="https://app.cursar.me/register"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-8 py-4 rounded-2xl text-sm font-bold text-white transition-all duration-200 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30 active:scale-[0.98]"
-              style={{ background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
+              className="group flex items-center gap-2 text-sm font-bold text-white transition-all duration-200 active:scale-[0.97]"
+              style={{
+                padding: '0.75rem 1.75rem',
+                borderRadius: '0.875rem',
+                background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc)',
+                boxShadow: '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
+                transition: 'box-shadow 0.2s ease, transform 0.2s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 45px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1.04)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1)'; }}
             >
               Começar grátis
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
             </a>
-            <Link
-              to="/modulos"
-              className="flex items-center gap-2 px-8 py-4 rounded-2xl text-sm font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/8 hover:text-white transition-all duration-200"
-            >
-              Ver todos os módulos
-            </Link>
+
+            {/* Ver todos os módulos — borda gradiente */}
+            <div style={{
+              padding: '1px',
+              borderRadius: '0.875rem',
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc, #f472b6)',
+            }}>
+              <Link
+                to="/modulos"
+                className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors duration-200"
+                style={{
+                  padding: '0.7rem 1.6rem',
+                  borderRadius: 'calc(0.875rem - 1px)',
+                  background: '#0a091e',
+                  display: 'flex',
+                }}
+              >
+                Ver todos os módulos
+              </Link>
+            </div>
           </motion.div>
 
           <motion.p
@@ -525,25 +603,6 @@ export default function HomePage() {
           </motion.p>
         </motion.div>
 
-        <AnimatePresence>
-          {showScrollHint && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 1.5, duration: 0.4 }}
-              className="absolute bottom-8 left-1/2 -translate-x-1/2"
-            >
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center pt-1.5"
-              >
-                <div className="w-1 h-1.5 rounded-full bg-slate-500" />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </section>
 
       {/* ── 2. MODULES CAROUSEL ──────────────────────────────────────────────── */}
@@ -637,7 +696,7 @@ export default function HomePage() {
 
       {/* ── 3–6. FEATURE SECTIONS — centralizado, imagem abaixo ─────────────── */}
       {FEATURE_SECTIONS.map((section, si) => (
-        <section key={section.id} id={section.id} className="relative py-24 px-6 sm:px-8 overflow-hidden">
+        <section key={section.id} id={section.id} className="relative py-14 px-6 sm:px-8 overflow-hidden" style={{ scrollMarginTop: '80px' }}>
           {/* Ambient glow */}
           <div className="absolute inset-0 pointer-events-none">
             <div
@@ -656,52 +715,45 @@ export default function HomePage() {
               </div>
 
               <h2
-                className="text-3xl sm:text-4xl font-black tracking-tight mb-5"
-                
+                className="font-black tracking-tight mb-5"
+                style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.875rem)' }}
               >
                 {section.titleLine1}
                 <br />
                 <span className="text-slate-400">{section.titleLine2}</span>
               </h2>
 
-              <p className="text-slate-400 text-base leading-relaxed max-w-2xl mx-auto mb-8">
+              <p className="text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto mb-6">
                 {section.description}
               </p>
 
-              {/* ── Feature badges (pills com ícone) ── */}
-              <div className="flex flex-wrap gap-2.5 justify-center mb-8">
+              {/* ── Feature badges — grid 2 colunas ── */}
+              <div
+                className="feature-grid mb-6 mx-auto"
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 260px))', justifyContent: 'center', gap: '0.5rem' }}
+              >
                 {section.features.map(({ icon: FeatureIcon, text }, fi) => (
                   <div
                     key={fi}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold ${section.bg} ${section.border} ${section.color}`}
+                    className={`feature-badge flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold ${section.bg} ${section.border} ${section.color}`}
                   >
-                    <FeatureIcon size={12} strokeWidth={2} />
+                    <FeatureIcon size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
                     {text}
                   </div>
                 ))}
               </div>
 
               {/* Limite Free / Pro */}
-              <div className="flex gap-2.5 justify-center flex-wrap mb-8">
-                <span className="text-xs font-semibold text-slate-500 bg-white/[0.04] border border-white/10 px-4 py-2 rounded-full whitespace-nowrap">
+              <div className="flex gap-2.5 justify-center flex-wrap">
+                <span className="text-xs font-semibold text-slate-500 bg-white/[0.04] border border-white/10 px-4 py-1.5 rounded-full whitespace-nowrap">
                   Free: {section.limit.free}
                 </span>
                 <span
-                  className={`text-xs font-semibold px-4 py-2 rounded-full border whitespace-nowrap ${section.bg} ${section.border} ${section.color}`}
+                  className={`text-xs font-semibold px-4 py-1.5 rounded-full border whitespace-nowrap ${section.bg} ${section.border} ${section.color}`}
                 >
                   Pro: {section.limit.pro}
                 </span>
               </div>
-
-              <a
-                href="https://app.cursar.me/register"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold border transition-all hover:scale-[1.03] active:scale-[0.98] ${section.bg} ${section.border} ${section.color}`}
-              >
-                Começar agora
-                <ArrowRight size={14} />
-              </a>
             </InView>
 
             {/* ── Imagem — sempre abaixo, substitua src ── */}
@@ -714,29 +766,24 @@ export default function HomePage() {
                   animationDelay: `${si * 0.7}s`,
                 }}
               >
-                <img
-                  src={section.imgSrc}
-                  alt={`Screenshot — ${section.eyebrow}`}
-                  className="w-full block"
-                  style={{ minHeight: '260px', objectFit: 'cover' }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextSibling.style.display = 'flex';
-                  }}
-                />
-                {/* Placeholder visual enquanto não há screenshot */}
-                <div
-                  className={`hidden items-center justify-center flex-col gap-3 py-24 ${section.bg}`}
-                  style={{ minHeight: '260px' }}
-                >
-                  <div className={`text-5xl opacity-25 ${section.color}`}>
-                    <LucideIcons.Image size={48} />
+                {section.images ? (
+                  <ImageCarousel images={section.images} />
+                ) : section.imgSrc ? (
+                  <img
+                    src={section.imgSrc}
+                    alt={`Screenshot — ${section.eyebrow}`}
+                    className="w-full block"
+                    style={{ objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div
+                    className={`flex items-center justify-center flex-col gap-3 py-24 ${section.bg}`}
+                    style={{ minHeight: '260px' }}
+                  >
+                    <LucideIcons.Image size={48} className={`opacity-25 ${section.color}`} />
+                    <p className="text-xs text-slate-600 text-center">Screenshot em breve</p>
                   </div>
-                  <p className="text-xs text-slate-600 text-center">
-                    Substitua <code className="text-slate-500">imgSrc</code> em <code className="text-slate-500">FEATURE_SECTIONS</code>
-                    <br />com o caminho do seu screenshot
-                  </p>
-                </div>
+                )}
               </div>
             </InView>
           </div>
@@ -744,7 +791,7 @@ export default function HomePage() {
       ))}
 
       {/* ── 7. PRICING ───────────────────────────────────────────────────────── */}
-      <section id="precos" className="relative py-24 px-6 sm:px-8">
+      <section id="precos" className="relative py-24 px-6 sm:px-8" style={{ scrollMarginTop: '80px' }}>
         <div className="max-w-4xl mx-auto">
           <InView className="text-center mb-16">
             <p className="text-xs font-black uppercase tracking-[0.4em] text-slate-600 mb-3">Planos</p>
@@ -847,13 +894,14 @@ export default function HomePage() {
       </section>
 
       {/* ── FINAL CTA ────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 px-6 sm:px-8 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] opacity-15 rounded-full"
-            style={{ background: 'radial-gradient(ellipse, rgba(129,140,248,1) 0%, transparent 65%)' }}
-          />
-          {/* Sparkles */}
+      <section className="relative py-32 px-6 sm:px-8">
+        {/* Glow FORA do overflow-hidden — sangra 180px acima da seção, preenchendo a quebra */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 w-[1000px] h-[700px] rounded-full pointer-events-none"
+          style={{ top: '-180px', opacity: 0.22, background: 'radial-gradient(ellipse at 50% 20%, rgba(129,140,248,0.95) 0%, rgba(99,102,241,0.4) 38%, transparent 68%)' }}
+        />
+        {/* Sparkles em container próprio com overflow-hidden */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {[
             { top: '22%', left: '12%',  size: 3, color: '#818cf8', dur: 2.6, delay: 0    },
             { top: '65%', left: '7%',   size: 4, color: '#c084fc', dur: 3.3, delay: 0.9  },
@@ -908,6 +956,30 @@ export default function HomePage() {
       </section>
 
       <style>{`
+        /* Badges sempre centralizados */
+        .feature-badge {
+          justify-content: center;
+        }
+        /* Último item ímpar no desktop — centralizado, mesma largura */
+        .feature-grid > *:last-child:nth-child(odd) {
+          grid-column: 1 / -1;
+          justify-self: center;
+          max-width: 260px;
+          width: 100%;
+        }
+        @media (max-width: 640px) {
+          .feature-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .feature-grid > *:last-child:nth-child(odd) {
+            max-width: 100%;
+          }
+          .feature-badge {
+            font-size: 11px;
+            padding: 0.35rem 0.75rem;
+            gap: 0.5rem;
+          }
+        }
         @keyframes imageFloat {
           0%, 100% { transform: translateY(0px); }
           50%       { transform: translateY(-9px); }
@@ -939,5 +1011,6 @@ export default function HomePage() {
         }
       `}</style>
     </div>
+    </>
   );
 }

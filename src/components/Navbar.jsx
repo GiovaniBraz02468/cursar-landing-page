@@ -2,12 +2,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
+import cursarLogo from '../assets/Cursar_icone_fundo.svg';
 
 const NAV_LINKS = [
   { to: '/', label: 'Início' },
   { to: '/modulos', label: 'Módulos' },
   { to: '/atualizacoes', label: 'Atualizações' },
+  { to: '/suporte', label: 'Suporte' },
 ];
 
 export default function Navbar() {
@@ -50,32 +52,20 @@ export default function Navbar() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease, margin-top 0.35s ease',
-            ...(scrolled ? {
-              background: 'rgba(7, 6, 20, 0.88)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(99,102,241,0.12)',
-              borderRadius: '0.875rem',
-              padding: '0.65rem 1.25rem',
-              marginTop: '0.5rem',
-              boxShadow: '0 4px 28px rgba(0,0,0,0.35)',
-            } : {
-              padding: '1.25rem 0',
-              marginTop: '0',
-            }),
+            transition: 'background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease, margin-top 0.4s ease, border-color 0.4s ease',
+            borderRadius: '0.875rem',
+            border: `1px solid ${scrolled ? 'rgba(99,102,241,0.14)' : 'rgba(99,102,241,0)'}`,
+            background: scrolled ? 'rgba(7, 6, 20, 0.88)' : 'rgba(7, 6, 20, 0)',
+            backdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
+            WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
+            padding: scrolled ? '0.65rem 1.25rem' : '1rem 0',
+            marginTop: scrolled ? '0.5rem' : '0',
+            boxShadow: scrolled ? '0 4px 28px rgba(0,0,0,0.35)' : '0 0 0 rgba(0,0,0,0)',
           }}
         >
           {/* Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', textDecoration: 'none', flexShrink: 0 }}>
-            <div style={{
-              width: '2.25rem', height: '2.25rem', borderRadius: '0.75rem',
-              background: 'linear-gradient(135deg, #6366f1, #9333ea)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 20px rgba(99,102,241,0.3)',
-            }}>
-              <Sparkles size={18} color="white" />
-            </div>
+            <img src={cursarLogo} alt="Cursar" style={{ width: '2.25rem', height: '2.25rem', borderRadius: '0.75rem' }} />
             <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#fff', letterSpacing: '-0.02em' }}>
               cursar.me
             </span>
@@ -190,9 +180,7 @@ export default function Navbar() {
               {/* Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                 <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <div style={{ width: '2rem', height: '2rem', borderRadius: '0.625rem', background: 'linear-gradient(135deg, #6366f1, #9333ea)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Sparkles size={16} color="white" />
-                  </div>
+                  <img src={cursarLogo} alt="Cursar" style={{ width: '2rem', height: '2rem', borderRadius: '0.625rem' }} />
                   <span style={{ fontWeight: 800, fontSize: '1rem', color: '#fff' }}>cursar.me</span>
                 </Link>
                 <button
@@ -228,28 +216,30 @@ export default function Navbar() {
                   </motion.div>
                 ))}
 
-                <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', padding: '0 1rem', marginBottom: '0.75rem' }}>
-                    Em destaque
-                  </p>
-                  {[
-                    { href: '/#trabalhos', label: 'Módulo Trabalhos', color: '#34d399' },
-                    { href: '/#portfolio',  label: 'Portfólio',        color: '#f87171' },
-                    { href: '/#documento',  label: 'Documento',        color: '#22d3ee' },
-                    { href: '/#precos',     label: 'Planos e preços',  color: '#818cf8' },
-                  ].map(({ href, label, color }, i) => (
-                    <motion.div key={href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }}>
-                      <a
-                        href={href}
-                        onClick={() => setMenuOpen(false)}
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 1rem', borderRadius: '0.625rem', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none', color, marginBottom: '0.125rem' }}
-                      >
-                        {label}
-                        <ArrowRight size={13} />
-                      </a>
-                    </motion.div>
-                  ))}
-                </div>
+                {location.pathname === '/' && (
+                  <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                    <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', padding: '0 1rem', marginBottom: '0.75rem' }}>
+                      Em destaque
+                    </p>
+                    {[
+                      { href: '/#trabalhos', label: 'Módulo Trabalhos', color: '#34d399' },
+                      { href: '/#portfolio',  label: 'Portfólio',        color: '#f87171' },
+                      { href: '/#documento',  label: 'Documento',        color: '#22d3ee' },
+                      { href: '/#precos',     label: 'Planos e preços',  color: '#818cf8' },
+                    ].map(({ href, label, color }, i) => (
+                      <motion.div key={href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }}>
+                        <a
+                          href={href}
+                          onClick={() => setMenuOpen(false)}
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 1rem', borderRadius: '0.625rem', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none', color, marginBottom: '0.125rem' }}
+                        >
+                          {label}
+                          <ArrowRight size={13} />
+                        </a>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </nav>
 
               {/* Bottom CTAs */}

@@ -1,13 +1,13 @@
-// App.jsx
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import ModulesPage from './pages/ModulesPage';
+import HomePage from './pages/Homepage';
+import ModulesPage from './pages/Modulespage';
 import UpdatesPage from './pages/UpdatesPage';
 import UpdateDetailPage from './pages/UpdateDetailPage';
+import ContactPage from './pages/ContactPage';
 
-// Scroll to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
@@ -25,7 +25,7 @@ function Layout() {
           <Route path="/modulos" element={<ModulesPage />} />
           <Route path="/atualizacoes" element={<UpdatesPage />} />
           <Route path="/atualizacoes/:id" element={<UpdateDetailPage />} />
-          {/* Fallback */}
+          <Route path="/suporte" element={<ContactPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>
@@ -35,8 +35,11 @@ function Layout() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Layout />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
+
