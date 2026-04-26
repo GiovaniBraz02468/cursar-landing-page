@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
+import posthog from 'posthog-js';
 import Navbar from './components/Navbar';
 import HomePage from './pages/Homepage';
 import ModulesPage from './pages/Modulespage';
@@ -14,10 +15,19 @@ function ScrollToTop() {
   return null;
 }
 
+function PostHogPageView() {
+  const location = useLocation();
+  useEffect(() => {
+    posthog.capture('$pageview', { $current_url: window.location.href });
+  }, [location]);
+  return null;
+}
+
 function Layout() {
   return (
     <>
       <ScrollToTop />
+      <PostHogPageView />
       <Navbar />
       <main>
         <Routes>
