@@ -1,6 +1,6 @@
+'use client'
 // pages/ModulesPage.jsx
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { GraduationCap, Users, Dumbbell, Sparkles, Clock, ArrowRight, Layers } from 'lucide-react';
@@ -49,12 +49,13 @@ const stagger = { show: { transition: { staggerChildren: 0.045 } } };
 export default function ModulesPage() {
   const [activeArea, setActiveArea]     = useState('estudantil');
   const [selectedModule, setSelectedModule] = useState(null);
-  const [isMobile, setIsMobile]         = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile]         = useState(false);
 
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', onResize, { passive: true });
-    return () => window.removeEventListener('resize', onResize);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const filtered = MODULES.filter((m) => m.area === activeArea);
@@ -63,14 +64,6 @@ export default function ModulesPage() {
 
   return (
     <>
-    <Helmet>
-      <title>Módulos | Cursar.me</title>
-      <meta name="description" content="Explore todos os módulos do Cursar.me: Trabalhos com Scrum, Portfólio, Documento, Rede social, Mensagens e muito mais. Tudo grátis para começar." />
-      <link rel="canonical" href="https://cursar.me/modulos" />
-      <meta property="og:url"         content="https://cursar.me/modulos" />
-      <meta property="og:title"       content="Módulos | Cursar.me" />
-      <meta property="og:description" content="Explore todos os módulos do Cursar.me: Trabalhos com Scrum, Portfólio, Documento, Rede social, Mensagens e muito mais." />
-    </Helmet>
     <div style={{ minHeight: '100vh', background: '#080718', color: '#fff', position: 'relative', overflow: 'hidden' }}>
 
       {/* Glow de fundo */}

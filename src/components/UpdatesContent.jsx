@@ -1,8 +1,8 @@
+'use client'
 // pages/UpdatesPage.jsx
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, Zap, Sparkles } from 'lucide-react';
 import { UPDATES } from '../data/updatesData';
 
@@ -35,9 +35,10 @@ function ChangeCounts({ changes }) {
 }
 
 export default function UpdatesPage() {
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
+    fn();
     window.addEventListener('resize', fn, { passive: true });
     return () => window.removeEventListener('resize', fn);
   }, []);
@@ -47,14 +48,6 @@ export default function UpdatesPage() {
 
   return (
     <>
-    <Helmet>
-      <title>Atualizações | Cursar.me</title>
-      <meta name="description" content="Acompanhe todas as novidades, melhorias e correções do Cursar.me. Cada versão, cada melhoria, cada evolução da plataforma." />
-      <link rel="canonical" href="https://cursar.me/atualizacoes" />
-      <meta property="og:url"         content="https://cursar.me/atualizacoes" />
-      <meta property="og:title"       content="Atualizações | Cursar.me" />
-      <meta property="og:description" content="Acompanhe todas as novidades, melhorias e correções do Cursar.me. Sempre evoluindo." />
-    </Helmet>
     <div style={{ minHeight: '100vh', background: '#080718', color: '#fff', position: 'relative', overflow: 'hidden' }}>
 
       {/* Glow de fundo */}
@@ -90,7 +83,7 @@ export default function UpdatesPage() {
           transition={{ delay: 0.1, duration: 0.5 }}
         >
           <Link
-            to={`/atualizacoes/${featured.id}`}
+            href={`/atualizacoes/${featured.id}`}
             style={{ textDecoration: 'none', display: 'block' }}
           >
             <div
@@ -166,8 +159,9 @@ export default function UpdatesPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06, duration: 0.4 }}
+                style={{ height: '100%' }}
               >
-                <Link to={`/atualizacoes/${update.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+                <Link href={`/atualizacoes/${update.id}`} style={{ textDecoration: 'none', display: 'flex', height: '100%' }}>
                   <div
                     style={{
                       borderRadius: '1rem',
@@ -175,6 +169,8 @@ export default function UpdatesPage() {
                       background: 'rgba(255,255,255,0.02)',
                       padding: '1.125rem',
                       height: '100%',
+                      width: '100%',
+                      boxSizing: 'border-box',
                       transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = `rgba(${accent.rgb},0.3)`; e.currentTarget.style.background = `rgba(${accent.rgb},0.04)`; e.currentTarget.style.boxShadow = `0 0 24px rgba(${accent.rgb},0.08)`; }}
