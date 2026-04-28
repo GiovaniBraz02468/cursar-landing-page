@@ -1,6 +1,6 @@
+'use client'
 // pages/ContactPage.jsx
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
   MessageCircle, Mail, ChevronDown, ArrowRight, Headphones, HelpCircle,
@@ -111,10 +111,11 @@ function AccordionItem({ question, answer, isOpen, onToggle, icon: Icon, color }
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState(null);
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 640);
+    fn();
     window.addEventListener('resize', fn, { passive: true });
     return () => window.removeEventListener('resize', fn);
   }, []);
@@ -123,15 +124,6 @@ export default function ContactPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Suporte & Contato | Cursar.me</title>
-        <meta name="description" content="Entre em contato com o suporte do Cursar.me via WhatsApp ou e-mail. Tire suas dúvidas sobre planos, funcionalidades e muito mais." />
-        <link rel="canonical" href="https://cursar.me/suporte" />
-        <meta property="og:url"         content="https://cursar.me/suporte" />
-        <meta property="og:title"       content="Suporte & Contato | Cursar.me" />
-        <meta property="og:description" content="Entre em contato com o suporte do Cursar.me via WhatsApp ou e-mail. Respondemos rápido." />
-      </Helmet>
-
       <div style={{ minHeight: '100vh', background: '#080718', color: '#fff', position: 'relative', overflow: 'hidden' }}>
 
         {/* Glow de fundo */}

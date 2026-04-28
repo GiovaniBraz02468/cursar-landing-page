@@ -1,34 +1,38 @@
+'use client'
 // pages/HomePage.jsx
 import { useRef, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
-import imgTrabalho   from '../assets/trabalho.png';
-import imgTrabalho2  from '../assets/trabalho2.png';
-import imgTrabalho3  from '../assets/trabalho3.png';
-import imgTrabalho4  from '../assets/trabalho4.png';
-import imgPortfolio  from '../assets/portfolio.png';
-import imgPortfolio2 from '../assets/portfolio2.png';
-import imgPortfolio3 from '../assets/portfolio3.png';
-import imgPortfolio4 from '../assets/portfolio4.png';
-import imgDoc  from '../assets/doc.png';
-import imgDoc2 from '../assets/doc2.png';
-import imgDoc3 from '../assets/doc3.png';
-import imgDoc4 from '../assets/doc4.png';
-import imgSocial  from '../assets/social.png';
-import imgSocial2 from '../assets/social2.png';
-import imgSocial3 from '../assets/social3.png';
-import imgSocial4 from '../assets/social4.png';
-import imgSocial5 from '../assets/social5.png';
-import imgSocial6 from '../assets/social6.png';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import * as LucideIcons from 'lucide-react';
+
+const imgTrabalho   = '/assets/trabalho.png';
+const imgTrabalho2  = '/assets/trabalho2.png';
+const imgTrabalho3  = '/assets/trabalho3.png';
+const imgTrabalho4  = '/assets/trabalho4.png';
+const imgPortfolio  = '/assets/portfolio.png';
+const imgPortfolio2 = '/assets/portfolio2.png';
+const imgPortfolio3 = '/assets/portfolio3.png';
+const imgPortfolio4 = '/assets/portfolio4.png';
+const imgDoc  = '/assets/doc.png';
+const imgDoc2 = '/assets/doc2.png';
+const imgDoc3 = '/assets/doc3.png';
+const imgDoc4 = '/assets/doc4.png';
+const imgSocial  = '/assets/social.png';
+const imgSocial2 = '/assets/social2.png';
+const imgSocial3 = '/assets/social3.png';
+const imgSocial4 = '/assets/social4.png';
+const imgSocial5 = '/assets/social5.png';
+const imgSocial6 = '/assets/social6.png';
 import {
   ArrowRight, Check, Sparkles,
   Users, MessageSquare, CheckSquare,
   Paperclip, Tag, Link2, Eye, Share2,
   Layout, Globe, Layers, FileText, Heart,
+  BookOpen, Briefcase, Dumbbell, FileUser, HardDrive, NotebookText,
 } from 'lucide-react';
 import { MODULES } from '../data/modulesData';
+
+// Icon map for dynamic lookup from modulesData
+const ICON_MAP = { BookOpen, Briefcase, Dumbbell, FileText, FileUser, Globe, HardDrive, Heart, Layers, MessageSquare, NotebookText, Sparkles, Users };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function InView({ children, className = '', delay = 0 }) {
@@ -364,7 +368,6 @@ const FEATURE_SECTIONS = [
     limit: { free: '5 projetos (3 públicos)', pro: 'Projetos ilimitados' },
     imgSrc: imgPortfolio,
     images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
-    images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
   },
   {
     id: 'documento',
@@ -467,14 +470,6 @@ export default function HomePage() {
 
   return (
     <>
-    <Helmet>
-      <title>Cursar.me — Organize sua vida estudantil, social e profissional</title>
-      <meta name="description" content="A plataforma que une trabalhos com Scrum, portfólio, documentos, rede social e fitness em um único lugar. Crie sua conta grátis." />
-      <link rel="canonical" href="https://cursar.me/" />
-      <meta property="og:url"   content="https://cursar.me/" />
-      <meta property="og:title" content="Cursar.me — Organize sua vida estudantil, social e profissional" />
-      <meta property="og:description" content="A plataforma que une trabalhos com Scrum, portfólio, documentos, rede social e fitness em um único lugar. Crie sua conta grátis." />
-    </Helmet>
     <div
       className="min-h-screen text-white overflow-x-hidden relative"
       style={{ background: '#0a091e' }}
@@ -508,24 +503,18 @@ export default function HomePage() {
           />
         </div>
 
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={{ show: { transition: { staggerChildren: 0.1 } } }}
-          className="relative z-10 max-w-4xl mx-auto"
-        >
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <div
             className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-8"
+            style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0s' }}
           >
             <Sparkles size={12} />
             Plataforma All-in-One
-          </motion.div>
+          </div>
 
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+          <h1
             className="font-black leading-[1.08] tracking-tight mb-6"
-            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.1s' }}
           >
             Sua jornada,{' '}
             <span
@@ -540,19 +529,17 @@ export default function HomePage() {
             >
               um só lugar.
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+          <p
             className="text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto"
-            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.125rem)' }}
+            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.125rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.2s' }}
           >
             Chega de 10 abas abertas. O Cursar.me reúne estudos, portfólio, projetos em equipe e currículo — tudo integrado.
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center' }}
+          <div
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.3s' }}
           >
             {/* Começar grátis */}
             <a
@@ -581,7 +568,7 @@ export default function HomePage() {
               background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc, #f472b6)',
             }}>
               <Link
-                to="/modulos"
+                href="/modulos"
                 className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors duration-200"
                 style={{
                   padding: '0.7rem 1.6rem',
@@ -593,34 +580,33 @@ export default function HomePage() {
                 Ver todos os módulos
               </Link>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+          <p
             className="mt-8 text-xs text-slate-400 font-medium"
+            style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.4s' }}
           >
             Gratuito para começar · Sem cartão de crédito · Upgrade quando quiser
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
       </section>
 
       {/* ── 2. MODULES CAROUSEL ──────────────────────────────────────────────── */}
-      <section className="py-10 overflow-hidden">
-        <InView className="text-center mb-12 px-6 sm:px-8">
+      <section className="py-10 overflow-hidden" style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.7s' }}>
+        <div className="text-center mb-12 px-6 sm:px-8">
           <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
             <Sparkles size={12} />
             O que você ganha
           </div>
           <h2
             className="text-3xl sm:text-4xl font-black tracking-tight"
-            
           >
             Um ecossistema completo,
             <br />
             <span className="text-slate-500">a sua disposição.</span>
           </h2>
-        </InView>
+        </div>
 
         <div className="relative select-none">
           {/* Edge fades */}
@@ -637,7 +623,7 @@ export default function HomePage() {
           <div className="overflow-hidden mb-3">
             <div className="carousel-track-left flex">
               {carouselA.map((mod, i) => {
-                const Icon = LucideIcons[mod.icon] || LucideIcons.Layers;
+                const Icon = ICON_MAP[mod.icon] || Layers;
                 return (
                   <div
                     key={`a-${mod.id}-${i}`}
@@ -663,7 +649,7 @@ export default function HomePage() {
           <div className="overflow-hidden">
             <div className="carousel-track-right flex" style={{ transform: 'translateX(-50%)' }}>
               {carouselB.map((mod, i) => {
-                const Icon = LucideIcons[mod.icon] || LucideIcons.Layers;
+                const Icon = ICON_MAP[mod.icon] || Layers;
                 return (
                   <div
                     key={`b-${mod.id}-${i}`}
@@ -688,7 +674,7 @@ export default function HomePage() {
 
         <InView className="text-center mt-12 px-6 sm:px-8">
           <Link
-            to="/modulos"
+            href="/modulos"
             className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group"
           >
             Ver todos os módulos em detalhe

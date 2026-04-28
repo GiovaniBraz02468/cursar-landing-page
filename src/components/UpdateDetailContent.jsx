@@ -1,7 +1,7 @@
-// pages/UpdateDetailPage.jsx
-import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+'use client'
+// pages/UpdateDetailPage.jsx — adaptado para receber update via props (SSG)
+import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Copy, Check, Sparkles, Plus, TrendingUp, Wrench, Trash2, ArrowRight } from 'lucide-react';
 import { UPDATES, CHANGE_TYPES, getUpdateUrl } from '../data/updatesData';
@@ -30,18 +30,8 @@ const TYPE_CONFIG = {
 
 const TYPE_ORDER = ['novo', 'melhoria', 'correcao', 'remocao'];
 
-export default function UpdateDetailPage() {
-  const { id }       = useParams();
-  const navigate     = useNavigate();
+export default function UpdateDetailContent({ update }) {
   const [copied, setCopied] = useState(false);
-
-  const update = UPDATES.find((u) => u.id === id);
-
-  useEffect(() => {
-    if (!update) navigate('/atualizacoes', { replace: true });
-  }, [update, navigate]);
-
-  if (!update) return null;
 
   const accent   = getAccent(update.badgeColor);
   const shareUrl = getUpdateUrl(update.id);
@@ -59,20 +49,12 @@ export default function UpdateDetailPage() {
     grouped[c.type].push(c);
   });
 
-  const idx  = UPDATES.findIndex((u) => u.id === id);
+  const idx  = UPDATES.findIndex((u) => u.id === update.id);
   const prev = UPDATES[idx + 1];
   const next = UPDATES[idx - 1];
 
   return (
     <>
-    <Helmet>
-      <title>{update.title} | Cursar.me</title>
-      <meta name="description" content={update.summary} />
-      <link rel="canonical" href={`https://cursar.me/atualizacoes/${update.id}`} />
-      <meta property="og:url"         content={`https://cursar.me/atualizacoes/${update.id}`} />
-      <meta property="og:title"       content={`${update.title} | Cursar.me`} />
-      <meta property="og:description" content={update.summary} />
-    </Helmet>
     <div style={{ minHeight: '100vh', background: '#080718', color: '#fff', position: 'relative', overflow: 'hidden' }}>
 
       {/* Glow de fundo */}
@@ -85,7 +67,7 @@ export default function UpdateDetailPage() {
         {/* Voltar */}
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
           <Link
-            to="/atualizacoes"
+            href="/atualizacoes"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: '#94a3b8', textDecoration: 'none', marginBottom: '2rem', transition: 'color 0.2s' }}
             onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#475569'; }}
@@ -194,7 +176,7 @@ export default function UpdateDetailPage() {
         {(prev || next) && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
             {prev ? (
-              <Link to={`/atualizacoes/${prev.id}`} style={{ textDecoration: 'none', maxWidth: '45%' }}>
+              <Link href={`/atualizacoes/${prev.id}`} style={{ textDecoration: 'none', maxWidth: '45%' }}>
                 <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>← Anterior</p>
                 <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
@@ -203,7 +185,7 @@ export default function UpdateDetailPage() {
               </Link>
             ) : <div />}
             {next ? (
-              <Link to={`/atualizacoes/${next.id}`} style={{ textDecoration: 'none', maxWidth: '45%', textAlign: 'right' }}>
+              <Link href={`/atualizacoes/${next.id}`} style={{ textDecoration: 'none', maxWidth: '45%', textAlign: 'right' }}>
                 <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>Próxima →</p>
                 <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}

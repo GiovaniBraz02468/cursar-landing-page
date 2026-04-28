@@ -1,9 +1,12 @@
+'use client'
 // Navbar.jsx — usa JS para responsivo (Tailwind v4 não gera breakpoints por padrão)
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
-import cursarLogo from '../assets/Cursar_icone_fundo.svg';
+
+const cursarLogo = '/Cursar_icone_fundo.svg';
 
 const NAV_LINKS = [
   { to: '/', label: 'Início' },
@@ -15,8 +18,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
-  const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -30,7 +33,7 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -64,7 +67,7 @@ export default function Navbar() {
           }}
         >
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', textDecoration: 'none', flexShrink: 0 }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', textDecoration: 'none', flexShrink: 0 }}>
             <img src={cursarLogo} alt="Cursar" style={{ width: '2.25rem', height: '2.25rem', borderRadius: '0.75rem' }} />
             <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#fff', letterSpacing: '-0.02em' }}>
               cursar.me
@@ -78,16 +81,16 @@ export default function Navbar() {
                 {NAV_LINKS.map(({ to, label }) => (
                   <Link
                     key={to}
-                    to={to}
+                    href={to}
                     style={{
                       fontSize: '0.875rem',
                       fontWeight: 600,
-                      color: location.pathname === to ? '#fff' : '#cbd5e1',
+                      color: pathname === to ? '#fff' : '#cbd5e1',
                       textDecoration: 'none',
                       transition: 'color 0.2s',
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = '#818cf8'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = location.pathname === to ? '#fff' : '#cbd5e1'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = pathname === to ? '#fff' : '#cbd5e1'; }}
                   >
                     {label}
                   </Link>
@@ -179,7 +182,7 @@ export default function Navbar() {
             >
               {/* Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                   <img src={cursarLogo} alt="Cursar" style={{ width: '2rem', height: '2rem', borderRadius: '0.625rem' }} />
                   <span style={{ fontWeight: 800, fontSize: '1rem', color: '#fff' }}>cursar.me</span>
                 </Link>
@@ -201,13 +204,13 @@ export default function Navbar() {
                     transition={{ delay: 0.05 + i * 0.06 }}
                   >
                     <Link
-                      to={to}
+                      href={to}
                       onClick={() => setMenuOpen(false)}
                       style={{
                         display: 'flex', padding: '0.75rem 1rem', borderRadius: '0.75rem',
                         fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none',
-                        color: location.pathname === to ? '#818cf8' : '#94a3b8',
-                        background: location.pathname === to ? 'rgba(99,102,241,0.08)' : 'transparent',
+                        color: pathname === to ? '#818cf8' : '#94a3b8',
+                        background: pathname === to ? 'rgba(99,102,241,0.08)' : 'transparent',
                         marginBottom: '0.25rem',
                       }}
                     >
@@ -216,7 +219,7 @@ export default function Navbar() {
                   </motion.div>
                 ))}
 
-                {location.pathname === '/' && (
+                {pathname === '/' && (
                   <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                     <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', padding: '0 1rem', marginBottom: '0.75rem' }}>
                       Em destaque

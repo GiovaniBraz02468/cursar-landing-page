@@ -1,3 +1,4 @@
+'use client'
 // ModuleModal.jsx
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -5,10 +6,11 @@ import { X, Check, Lock, Zap } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
 export default function ModuleModal({ module: mod, onClose }) {
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
+    onResize();
     window.addEventListener('resize', onResize, { passive: true });
     return () => window.removeEventListener('resize', onResize);
   }, []);
