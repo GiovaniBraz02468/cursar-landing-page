@@ -29,11 +29,14 @@ export default function Navbar() {
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 1024);
+    onResize();
     window.addEventListener('resize', onResize, { passive: true });
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    if (menuOpen) setMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';

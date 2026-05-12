@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'
+
 import { UPDATES } from '../data/updatesData'
 
 export default function sitemap() {
