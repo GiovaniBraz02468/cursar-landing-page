@@ -1,7 +1,7 @@
 import './globals.css'
 import Navbar from '../components/Navbar'
 import PostHogProvider from '../components/PostHogProvider'
-
+import { LanguageProvider } from '../context/LanguageContext'
 
 export const metadata = {
   title: 'Cursar.me — Organize sua vida estudantil, social e profissional',
@@ -51,10 +51,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body style={{ margin: 0, padding: 0, overflowX: 'hidden' }} suppressHydrationWarning>
-        <PostHogProvider>
-          <Navbar />
-          <main>{children}</main>
-        </PostHogProvider>
+        <LanguageProvider>
+          <PostHogProvider>
+            <Navbar />
+            <main>{children}</main>
+          </PostHogProvider>
+        </LanguageProvider>
       </body>
     </html>
   )

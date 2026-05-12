@@ -6,48 +6,17 @@ import {
   MessageCircle, Mail, ChevronDown, ArrowRight, Headphones, HelpCircle,
   Globe, Database, Users, LayoutGrid, Award, Smartphone, Crown, FolderLock,
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-const FAQS = [
-  {
-    icon: Globe, color: '#34d399',
-    question: 'O que é o Super Link e como ele funciona?',
-    answer: 'O Super Link (cursar.me/seu-nome) é sua vitrine profissional automática. Ele reúne seus certificados, histórico acadêmico e projetos do portfólio em uma única página otimizada para RHs e recrutadores. Você controla o que fica visível nas configurações de cada módulo.',
-  },
-  {
-    icon: Database, color: '#818cf8',
-    question: 'Como funciona o limite do Drive e arquivos?',
-    answer: 'No plano Free você tem 500 MB de armazenamento. No Premium o limite base é 15 GB. Em trabalhos de equipe, o peso dos arquivos subidos pelos membros recai sobre o armazenamento do dono do projeto — se lotar, ninguém sobe mais arquivos até ele liberar espaço ou fazer upgrade.',
-  },
-  {
-    icon: Users, color: '#f472b6',
-    question: 'Posso criar quantos grupos de trabalho?',
-    answer: 'Usuários Free podem ser donos de até 3 trabalhos simultâneos. Não há limite para participar como membro de trabalhos criados por outros. Usuários Premium podem criar trabalhos ilimitados.',
-  },
-  {
-    icon: LayoutGrid, color: '#c084fc',
-    question: 'O Portfólio aceita quais tipos de arquivos?',
-    answer: 'O construtor por blocos aceita textos, imagens (galeria e carrossel), vídeos via link (YouTube/Vimeo) e anexos para download (PDF/ZIP). Ideal para documentar cases acadêmicos e projetos freelance.',
-  },
-  {
-    icon: Award, color: '#fbbf24',
-    question: 'Como o sistema ajuda no controle de cursos?',
-    answer: 'Você cadastra suas graduações, cursos técnicos ou livres. O sistema calcula automaticamente o status (Em andamento / Concluído) baseado nas datas e permite anexar o link do certificado para ele aparecer validado no seu perfil público.',
-  },
-  {
-    icon: Smartphone, color: '#34d399',
-    question: 'O Cursar funciona offline?',
-    answer: 'O Cursar é um PWA (Progressive Web App) — você pode instalá-lo no celular ou PC e ele funciona de forma mais rápida. Algumas funções de leitura operam offline, mas a sincronização de dados requer conexão.',
-  },
-  {
-    icon: Crown, color: '#fbbf24',
-    question: 'Como gerenciar minha assinatura Premium?',
-    answer: 'Toda a gestão financeira é feita pelo nosso portal seguro via Stripe. Você pode baixar faturas, trocar o cartão de crédito ou cancelar a renovação automática a qualquer momento com um clique.',
-  },
-  {
-    icon: FolderLock, color: '#818cf8',
-    question: 'Meus arquivos no Drive são privados?',
-    answer: 'Sim. Apenas você tem acesso aos arquivos no Drive pessoal. Em pastas de Trabalhos em Grupo, apenas os membros convidados por você podem visualizar e baixar os documentos.',
-  },
+const FAQ_CONFIG = [
+  { icon: Globe,      color: '#34d399' },
+  { icon: Database,   color: '#818cf8' },
+  { icon: Users,      color: '#f472b6' },
+  { icon: LayoutGrid, color: '#c084fc' },
+  { icon: Award,      color: '#fbbf24' },
+  { icon: Smartphone, color: '#34d399' },
+  { icon: Crown,      color: '#fbbf24' },
+  { icon: FolderLock, color: '#818cf8' },
 ];
 
 function AccordionItem({ question, answer, isOpen, onToggle, icon: Icon, color }) {
@@ -110,6 +79,7 @@ function AccordionItem({ question, answer, isOpen, onToggle, icon: Icon, color }
 }
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [openFaq, setOpenFaq] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -120,7 +90,14 @@ export default function ContactPage() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  const waLink = `https://wa.me/5517991111822?text=${encodeURIComponent('Oi! Vim pelo site Cursar...')}`;
+  const waMessage = t('supportPage.waMessage');
+  const waLink = `https://wa.me/5517991111822?text=${encodeURIComponent(waMessage)}`;
+
+  // Combinar a config de ícones com as traduções das FAQs
+  const faqs = (t('supportPage.faqs') || []).map((faq, i) => ({
+    ...faq,
+    ...FAQ_CONFIG[i % FAQ_CONFIG.length]
+  }));
 
   return (
     <>
@@ -142,13 +119,13 @@ export default function ContactPage() {
           >
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.22)', color: '#818cf8', fontSize: '0.75rem', fontWeight: 600, padding: '0.375rem 0.875rem', borderRadius: 999, marginBottom: '1.25rem' }}>
               <Headphones size={11} />
-              Estamos aqui
+              {t('supportPage.badge')}
             </div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.08, marginBottom: '0.75rem' }}>
-              Suporte & Contato
+              {t('supportPage.title')}
             </h1>
             <p style={{ color: '#94a3b8', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
-              Tem alguma dúvida ou precisa de ajuda? A gente responde rápido.
+              {t('supportPage.subtitle')}
             </p>
           </motion.div>
 
@@ -178,8 +155,8 @@ export default function ContactPage() {
                   <MessageCircle size={20} style={{ color: '#34d399' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>Suporte WhatsApp</p>
-                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Atendimento direto</p>
+                  <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>{t('supportPage.waTitle')}</p>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{t('supportPage.waSubtitle')}</p>
                 </div>
               </div>
               <ArrowRight size={15} style={{ color: '#34d399', flexShrink: 0 }} />
@@ -197,7 +174,7 @@ export default function ContactPage() {
                   <Mail size={20} style={{ color: '#60a5fa' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>E-mail Suporte</p>
+                  <p style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.2rem' }}>{t('supportPage.emailTitle')}</p>
                   <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8' }}>suporte@cursar.me</p>
                 </div>
               </div>
@@ -215,7 +192,7 @@ export default function ContactPage() {
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.2)', color: '#fbbf24', fontSize: '0.7rem', fontWeight: 700, padding: '0.3rem 0.75rem', borderRadius: 999 }}>
               <HelpCircle size={10} />
-              Dúvidas frequentes
+              {t('supportPage.faqBadge')}
             </div>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
           </motion.div>
@@ -227,7 +204,7 @@ export default function ContactPage() {
             transition={{ delay: 0.25, duration: 0.5 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
           >
-            {FAQS.map((faq, i) => (
+            {faqs.map((faq, i) => (
               <AccordionItem
                 key={i}
                 question={faq.question}
@@ -249,7 +226,7 @@ export default function ContactPage() {
             style={{ textAlign: 'center', marginTop: '3.5rem', padding: '2rem', borderRadius: '1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
             <p style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '1rem' }}>
-              Ainda não tem uma conta? É grátis para começar.
+              {t('supportPage.ctaText')}
             </p>
             <a
               href="https://app.cursar.me/register"
@@ -257,7 +234,7 @@ export default function ContactPage() {
               rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.875rem 1.75rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 700, color: '#fff', textDecoration: 'none', background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
             >
-              Criar conta grátis
+              {t('supportPage.cta')}
               <ArrowRight size={14} />
             </a>
           </motion.div>

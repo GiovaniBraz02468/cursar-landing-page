@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { GraduationCap, Users, Dumbbell, Sparkles, Clock, ArrowRight, Layers } from 'lucide-react';
-import { MODULES, MODULE_AREAS } from '../data/modulesData';
+import { MODULES } from '../data/modulesData';
 import ModuleModal from '../components/ModuleModal';
+import { useLanguage } from '../context/LanguageContext';
 
 const AREA_ORDER = ['estudantil', 'social', 'fitness', 'pessoal'];
 
@@ -47,6 +48,7 @@ const fadeUp = {
 const stagger = { show: { transition: { staggerChildren: 0.045 } } };
 
 export default function ModulesPage() {
+  const { t } = useLanguage();
   const [activeArea, setActiveArea]     = useState('estudantil');
   const [selectedModule, setSelectedModule] = useState(null);
   const [isMobile, setIsMobile]         = useState(false);
@@ -59,8 +61,14 @@ export default function ModulesPage() {
   }, []);
 
   const filtered = MODULES.filter((m) => m.area === activeArea);
-  const areaInfo = MODULE_AREAS[activeArea];
   const areaMeta = AREA_META[activeArea];
+
+  // Dados de área traduzidos
+  const areaInfo = {
+    label: t(`areas.${activeArea}.label`),
+    description: t(`areas.${activeArea}.description`),
+    soon: activeArea === 'fitness' || activeArea === 'pessoal',
+  };
 
   return (
     <>
@@ -82,14 +90,14 @@ export default function ModulesPage() {
         >
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.22)', color: '#818cf8', fontSize: '0.75rem', fontWeight: 600, padding: '0.375rem 0.875rem', borderRadius: 999, marginBottom: '1.25rem' }}>
             <Layers size={11} />
-            Plataforma completa
+            {t('modulosPage.badge')}
           </div>
           <h1 style={{ fontSize: 'clamp(1.2rem, 5vw, 2.75rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.02em', marginBottom: '0.75rem' }}>
-            Cada área da sua vida,{' '}
-            <span style={{ color: '#64748b' }}>com a ferramenta certa.</span>
+            {t('modulosPage.title')}{' '}
+            <span style={{ color: '#64748b' }}>{t('modulosPage.titleGray')}</span>
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '0.8125rem' }}>
-            Clique em um card para ver mais sobre esse módulo.
+            {t('modulosPage.subtitle')}
           </p>
         </motion.div>
 
@@ -101,11 +109,12 @@ export default function ModulesPage() {
           style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.625rem', marginBottom: '2rem' }}
         >
           {AREA_ORDER.map((areaKey) => {
-            const area     = MODULE_AREAS[areaKey];
             const meta     = AREA_META[areaKey];
             const isActive = activeArea === areaKey;
+            const isSoon   = areaKey === 'fitness' || areaKey === 'pessoal';
             const count    = MODULES.filter((m) => m.area === areaKey && !m.soon).length;
             const { Icon } = meta;
+            const areaLabel = t(`areas.${areaKey}.label`);
 
             return (
               <button
@@ -140,17 +149,17 @@ export default function ModulesPage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: isMobile ? '0.8rem' : '0.875rem', fontWeight: 800, color: isActive ? '#f1f5f9' : '#94a3b8', lineHeight: 1 }}>
-                      {area.label}
+                      {areaLabel}
                     </span>
-                    {area.soon && (
+                    {isSoon && (
                       <span style={{ fontSize: 7, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.06em', background: 'rgba(245,158,11,0.12)', color: '#f59e0b', padding: '2px 5px', borderRadius: 999 }}>
-                        Em breve
+                        {t('modulosPage.soon')}
                       </span>
                     )}
                   </div>
-                  {!area.soon && (
+                  {!isSoon && (
                     <p style={{ fontSize: '0.65rem', color: isActive ? meta.color : '#475569', fontWeight: 600, marginTop: '0.125rem', transition: 'color 0.2s' }}>
-                      {count} {count === 1 ? 'módulo' : 'módulos'}
+                      {count} {count === 1 ? t('modulosPage.module') : t('modulosPage.modules')}
                     </p>
                   )}
                 </div>
@@ -173,7 +182,7 @@ export default function ModulesPage() {
               <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 56, height: 56, borderRadius: '1rem', background: `${areaMeta.color}15`, border: `1px solid ${areaMeta.color}30`, marginBottom: '1rem' }}>
                 <Clock size={24} style={{ color: areaMeta.color }} strokeWidth={1.5} />
               </div>
-              <p style={{ fontSize: '1rem', fontWeight: 800, color: '#e2e8f0', marginBottom: '0.5rem' }}>Em planejamento</p>
+              <p style={{ fontSize: '1rem', fontWeight: 800, color: '#e2e8f0', marginBottom: '0.5rem' }}>{t('modulosPage.planning')}</p>
               <p style={{ fontSize: '0.8125rem', color: '#94a3b8', maxWidth: '22rem', margin: '0 auto' }}>
                 {areaInfo.description}
               </p>
@@ -193,6 +202,7 @@ export default function ModulesPage() {
             >
               {filtered.map((mod) => {
                 const IconComp = Icons[mod.icon] || Icons.Layers;
+                const modTitle = t(`modules.${mod.id}.title`);
                 return (
                   <motion.button
                     key={mod.id}
@@ -225,12 +235,12 @@ export default function ModulesPage() {
 
                     {/* Nome */}
                     <span style={{ fontSize: isMobile ? '0.75rem' : '0.8125rem', fontWeight: 800, color: '#f1f5f9', lineHeight: 1.2 }}>
-                      {mod.title}
+                      {modTitle}
                     </span>
 
                     {/* Ver mais */}
                     <span className={`text-[10px] font-bold ${mod.color}`} style={{ opacity: 0.85 }}>
-                      Ver mais →
+                      {t('modulosPage.viewMore')}
                     </span>
                   </motion.button>
                 );
@@ -248,7 +258,7 @@ export default function ModulesPage() {
           style={{ textAlign: 'center', marginTop: '3.5rem' }}
         >
           <p style={{ color: '#94a3b8', fontSize: '0.75rem', marginBottom: '1rem' }}>
-            Todos disponíveis gratuitamente para começar.
+            {t('modulosPage.freeAll')}
           </p>
           <a
             href="https://app.cursar.me/register"
@@ -262,7 +272,7 @@ export default function ModulesPage() {
               background: 'linear-gradient(135deg, #818cf8, #c084fc)',
             }}
           >
-            Criar conta grátis
+            {t('modulosPage.cta')}
             <ArrowRight size={14} />
           </a>
         </motion.div>

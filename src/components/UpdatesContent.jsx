@@ -5,9 +5,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Zap, Sparkles } from 'lucide-react';
 import { UPDATES } from '../data/updatesData';
+import { useLanguage } from '../context/LanguageContext';
 
-function formatDate(dateStr) {
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('pt-BR', {
+function formatDate(dateStr, lang) {
+  const localeMap = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
+  return new Date(dateStr + 'T12:00:00').toLocaleDateString(localeMap[lang] || 'pt-BR', {
     day: 'numeric', month: 'long', year: 'numeric',
   });
 }
@@ -18,23 +20,26 @@ function getAccent(badgeColor) {
   if (badgeColor.includes('emerald')) return { color: '#34d399', rgb: '52,211,153'   };
   if (badgeColor.includes('pink'))    return { color: '#f472b6', rgb: '244,114,182'  };
   if (badgeColor.includes('purple'))  return { color: '#c084fc', rgb: '192,132,252'  };
+  if (badgeColor.includes('orange'))  return { color: '#fb923c', rgb: '251,146,60'   };
   return { color: '#818cf8', rgb: '99,102,241' };
 }
 
-function ChangeCounts({ changes }) {
+function ChangeCounts({ changes, t }) {
   const novo     = changes.filter((c) => c.type === 'novo').length;
   const melhoria = changes.filter((c) => c.type === 'melhoria').length;
   const correcao = changes.filter((c) => c.type === 'correcao').length;
+  const counts   = t('updatesPage.counts');
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-      {novo     > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#34d399', background: 'rgba(52,211,153,0.1)',  border: '1px solid rgba(52,211,153,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {novo} {novo === 1 ? 'novidade' : 'novidades'}</span>}
-      {melhoria > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#60a5fa', background: 'rgba(96,165,250,0.1)',  border: '1px solid rgba(96,165,250,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {melhoria} {melhoria === 1 ? 'melhoria' : 'melhorias'}</span>}
-      {correcao > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#fbbf24', background: 'rgba(251,191,36,0.1)',  border: '1px solid rgba(251,191,36,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {correcao} {correcao === 1 ? 'correção' : 'correções'}</span>}
+      {novo     > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#34d399', background: 'rgba(52,211,153,0.1)',  border: '1px solid rgba(52,211,153,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {novo} {novo === 1 ? counts.novo.one : counts.novo.many}</span>}
+      {melhoria > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#60a5fa', background: 'rgba(96,165,250,0.1)',  border: '1px solid rgba(96,165,250,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {melhoria} {melhoria === 1 ? counts.melhoria.one : counts.melhoria.many}</span>}
+      {correcao > 0 && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#fbbf24', background: 'rgba(251,191,36,0.1)',  border: '1px solid rgba(251,191,36,0.2)',  padding: '3px 8px', borderRadius: 999 }}>✦ {correcao} {correcao === 1 ? counts.correcao.one : counts.correcao.many}</span>}
     </div>
   );
 }
 
 export default function UpdatesPage() {
+  const { t, lang } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
@@ -43,7 +48,25 @@ export default function UpdatesPage() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  const [featured, ...older] = UPDATES;
+  const [rawFeatured, ...rawOlder] = UPDATES;
+
+  // Helper to resolve translated update data
+  const resolveUpdate = (update) => {
+    const translated = t(`updates.${update.id}`);
+    if (translated && typeof translated === 'object') {
+      return {
+        ...update,
+        title: translated.title || update.title,
+        badge: translated.badge || update.badge,
+        summary: translated.summary || update.summary,
+        changes: translated.changes || update.changes,
+      };
+    }
+    return update;
+  };
+
+  const featured = resolveUpdate(rawFeatured);
+  const older = rawOlder.map(resolveUpdate);
   const featuredAccent = getAccent(featured.badgeColor);
 
   return (
@@ -66,13 +89,13 @@ export default function UpdatesPage() {
         >
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)', color: '#34d399', fontSize: '0.75rem', fontWeight: 600, padding: '0.375rem 0.875rem', borderRadius: 999, marginBottom: '1.25rem' }}>
             <Zap size={11} />
-            Sempre evoluindo
+            {t('updatesPage.badge')}
           </div>
           <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.08, marginBottom: '0.75rem' }}>
-            Atualizações
+            {t('updatesPage.title')}
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '0.9375rem', maxWidth: '28rem', margin: '0 auto' }}>
-            Cada versão, cada melhoria, cada novidade. Acompanhe a evolução do Cursar.me.
+            {t('updatesPage.subtitle')}
           </p>
         </motion.div>
 
@@ -106,7 +129,7 @@ export default function UpdatesPage() {
               {/* Topo: badges */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em', background: `rgba(${featuredAccent.rgb},0.15)`, color: featuredAccent.color, border: `1px solid rgba(${featuredAccent.rgb},0.3)`, padding: '3px 8px', borderRadius: 999 }}>
-                  <Sparkles size={9} /> Mais recente
+                  <Sparkles size={9} /> {t('updatesPage.latest')}
                 </span>
                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${featured.badgeColor}`}>
                   {featured.badge}
@@ -116,7 +139,7 @@ export default function UpdatesPage() {
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}>
                   <Calendar size={10} />
-                  {formatDate(featured.date)}
+                  {formatDate(featured.date, lang)}
                 </span>
               </div>
 
@@ -128,9 +151,9 @@ export default function UpdatesPage() {
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
-                <ChangeCounts changes={featured.changes} />
+                <ChangeCounts changes={featured.changes} t={t} />
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', fontWeight: 700, color: featuredAccent.color }}>
-                  Ver detalhes <ArrowRight size={13} />
+                  {t('updatesPage.viewDetails')} <ArrowRight size={13} />
                 </span>
               </div>
             </div>
@@ -145,7 +168,7 @@ export default function UpdatesPage() {
           style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}
         >
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
-          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8' }}>Versões anteriores</span>
+          <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8' }}>{t('updatesPage.olderVersions')}</span>
           <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
         </motion.div>
 
@@ -183,7 +206,7 @@ export default function UpdatesPage() {
                       </span>
                       <span style={{ fontSize: '0.65rem', fontFamily: 'monospace', color: '#94a3b8' }}>v{update.version}</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: '0.65rem', color: '#94a3b8', marginLeft: 'auto' }}>
-                        <Calendar size={9} /> {formatDate(update.date)}
+                        <Calendar size={9} /> {formatDate(update.date, lang)}
                       </span>
                     </div>
 
@@ -195,7 +218,7 @@ export default function UpdatesPage() {
                     </p>
 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <ChangeCounts changes={update.changes} />
+                      <ChangeCounts changes={update.changes} t={t} />
                       <ArrowRight size={13} style={{ color: '#94a3b8', flexShrink: 0 }} />
                     </div>
                   </div>

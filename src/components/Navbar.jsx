@@ -4,22 +4,119 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Globe, Check } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const cursarLogo = '/Cursar_icone_fundo.svg';
 
-const NAV_LINKS = [
-  { to: '/', label: 'Início' },
-  { to: '/modulos', label: 'Módulos' },
-  { to: '/atualizacoes', label: 'Atualizações' },
-  { to: '/suporte', label: 'Suporte' },
+const NAV_LINKS = (t) => [
+  { to: '/', label: t('common.home') },
+  { to: '/modulos', label: t('common.modules') },
+  { to: '/atualizacoes', label: t('common.updates') },
+  { to: '/suporte', label: t('common.support') },
 ];
+
+const LANGUAGES = [
+  { code: 'pt', label: 'Português', flag: '🇧🇷' },
+  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+];
+
+function LanguageModal({ isOpen, onClose }) {
+  const { lang, changeLanguage, t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 500);
+    onResize();
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  if (!isOpen) return null;
+
+  const panelStyle = isMobile
+    ? { borderRadius: '1.5rem 1.5rem 0 0', background: '#0d0c22', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 -8px 40px rgba(0,0,0,0.5)', padding: '1.5rem' }
+    : { borderRadius: '1.25rem', background: '#0d0c22', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 80px rgba(0,0,0,0.6)', padding: '1.5rem', width: '320px' };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          zIndex: 201,
+          ...(isMobile
+            ? { bottom: 0, left: 0, right: 0 }
+            : { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' })
+        }}
+      >
+        <motion.div
+          initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, y: 16 }}
+          animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, y: 0 }}
+          exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, y: 16 }}
+          transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+          style={panelStyle}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#fff' }}>{t('navbar.language')}</h3>
+            <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}>
+              <X size={18} />
+            </button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {LANGUAGES.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => { changeLanguage(l.code); onClose(); }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.875rem 1rem',
+                  borderRadius: '0.875rem',
+                  border: '1px solid',
+                  borderColor: lang === l.code ? 'rgba(99,102,241,0.3)' : 'rgba(255,255,255,0.05)',
+                  background: lang === l.code ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.03)',
+                  color: lang === l.code ? '#fff' : '#94a3b8',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  textAlign: 'left'
+                }}
+                onMouseEnter={(e) => { if (lang !== l.code) e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                onMouseLeave={(e) => { if (lang !== l.code) e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '1.25rem' }}>{l.flag}</span>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{l.label}</span>
+                </div>
+                {lang === l.code && <Check size={16} className="text-indigo-400" />}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [langModalOpen, setLangModalOpen] = useState(false);
   const pathname = usePathname();
+  const { lang, t } = useLanguage();
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -39,9 +136,11 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    document.body.style.overflow = (menuOpen || langModalOpen) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+  }, [menuOpen, langModalOpen]);
+
+  const currentLangObj = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
 
   return (
     <>
@@ -81,7 +180,7 @@ export default function Navbar() {
           {!isMobile && (
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                {NAV_LINKS.map(({ to, label }) => (
+                {NAV_LINKS(t).map(({ to, label }) => (
                   <Link
                     key={to}
                     href={to}
@@ -100,7 +199,29 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                {/* Language Switcher Desktop */}
+                <button
+                  onClick={() => setLangModalOpen(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '0.75rem',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    color: '#cbd5e1'
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#cbd5e1'; }}
+                >
+                  <Globe size={16} />
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>{lang}</span>
+                </button>
+
                 <a
                   href="https://app.cursar.me"
                   target="_blank"
@@ -109,7 +230,7 @@ export default function Navbar() {
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#cbd5e1'; }}
                 >
-                  Entrar
+                  {t('common.login')}
                 </a>
                 <a
                   href="https://app.cursar.me/register"
@@ -129,7 +250,7 @@ export default function Navbar() {
                   onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f1'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
                 >
-                  Começar grátis
+                  {t('common.startFree')}
                 </a>
               </div>
             </>
@@ -137,26 +258,47 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           {isMobile && (
-            <button
-              onClick={() => setMenuOpen(true)}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: '#cbd5e1', padding: '0.5rem', borderRadius: '0.75rem',
-              }}
-              aria-label="Abrir menu"
-            >
-              <Menu size={22} />
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+               <button
+                  onClick={() => setLangModalOpen(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '2.5rem',
+                    height: '2.5rem',
+                    borderRadius: '0.75rem',
+                    background: scrolled ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    cursor: 'pointer',
+                    color: '#cbd5e1'
+                  }}
+                >
+                  <Globe size={18} />
+                </button>
+              <button
+                onClick={() => setMenuOpen(true)}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: '#cbd5e1', padding: '0.5rem', borderRadius: '0.75rem',
+                }}
+                aria-label="Abrir menu"
+              >
+                <Menu size={22} />
+              </button>
+            </div>
           )}
         </div>
       </motion.nav>
+
+      <LanguageModal isOpen={langModalOpen} onClose={() => setLangModalOpen(false)} />
 
       {/* ── Mobile side drawer ─────────────────────────────────────────────── */}
       <AnimatePresence>
         {menuOpen && isMobile && (
           <>
             <motion.div
-              key="backdrop"
+              key="backdrop-drawer"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -181,6 +323,7 @@ export default function Navbar() {
                 background: '#0a091e',
                 borderLeft: '1px solid rgba(255,255,255,0.06)',
                 display: 'flex', flexDirection: 'column',
+                overflow: 'hidden', // Trava o transbordamento geral
               }}
             >
               {/* Header */}
@@ -198,8 +341,8 @@ export default function Navbar() {
               </div>
 
               {/* Nav links */}
-              <nav style={{ flex: 1, padding: '1rem', overflowY: 'auto' }}>
-                {NAV_LINKS.map(({ to, label }, i) => (
+              <nav style={{ padding: '0.5rem', flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+                {NAV_LINKS(t).map(({ to, label }, i) => (
                   <motion.div
                     key={to}
                     initial={{ opacity: 0, x: 20 }}
@@ -225,13 +368,13 @@ export default function Navbar() {
                 {pathname === '/' && (
                   <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                     <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', padding: '0 1rem', marginBottom: '0.75rem' }}>
-                      Em destaque
+                      {t('navbar.featured')}
                     </p>
                     {[
-                      { href: '/#trabalhos', label: 'Módulo Trabalhos', color: '#34d399' },
-                      { href: '/#portfolio',  label: 'Portfólio',        color: '#f87171' },
-                      { href: '/#documento',  label: 'Documento',        color: '#22d3ee' },
-                      { href: '/#precos',     label: 'Planos e preços',  color: '#818cf8' },
+                      { href: '/#trabalhos', label: t('navbar.featuredLinks.works'), color: '#34d399' },
+                      { href: '/#portfolio',  label: t('navbar.featuredLinks.portfolio'),        color: '#f87171' },
+                      { href: '/#documento',  label: t('navbar.featuredLinks.document'),        color: '#22d3ee' },
+                      { href: '/#precos',     label: t('navbar.featuredLinks.pricing'),  color: '#818cf8' },
                     ].map(({ href, label, color }, i) => (
                       <motion.div key={href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }}>
                         <a
@@ -261,7 +404,7 @@ export default function Navbar() {
                   rel="noopener noreferrer"
                   style={{ display: 'block', textAlign: 'center', padding: '0.75rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 700, color: '#cbd5e1', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none' }}
                 >
-                  Entrar
+                  {t('common.login')}
                 </a>
                 <a
                   href="https://app.cursar.me/register"
@@ -269,7 +412,7 @@ export default function Navbar() {
                   rel="noopener noreferrer"
                   style={{ display: 'block', textAlign: 'center', padding: '0.75rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 900, color: '#fff', background: 'linear-gradient(135deg, #818cf8, #c084fc)', textDecoration: 'none' }}
                 >
-                  Começar grátis
+                  {t('common.startFree')}
                 </a>
               </motion.div>
             </motion.div>

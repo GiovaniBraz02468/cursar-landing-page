@@ -1,13 +1,15 @@
 'use client'
-// pages/UpdateDetailPage.jsx — adaptado para receber update via props (SSG)
+// pages/UpdateDetailPage.jsx
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Copy, Check, Sparkles, Plus, TrendingUp, Wrench, Trash2, ArrowRight } from 'lucide-react';
-import { UPDATES, CHANGE_TYPES, getUpdateUrl } from '../data/updatesData';
+import { UPDATES, getUpdateUrl } from '../data/updatesData';
+import { useLanguage } from '../context/LanguageContext';
 
-function formatDate(dateStr) {
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('pt-BR', {
+function formatDate(dateStr, lang) {
+  const localeMap = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
+  return new Date(dateStr + 'T12:00:00').toLocaleDateString(localeMap[lang] || 'pt-BR', {
     day: 'numeric', month: 'long', year: 'numeric',
   });
 }
@@ -18,21 +20,32 @@ function getAccent(badgeColor) {
   if (badgeColor.includes('emerald')) return { color: '#34d399', rgb: '52,211,153'   };
   if (badgeColor.includes('pink'))    return { color: '#f472b6', rgb: '244,114,182'  };
   if (badgeColor.includes('purple'))  return { color: '#c084fc', rgb: '192,132,252'  };
+  if (badgeColor.includes('orange'))  return { color: '#fb923c', rgb: '251,146,60'   };
   return { color: '#818cf8', rgb: '99,102,241' };
 }
 
-const TYPE_CONFIG = {
-  novo:     { label: 'Novidades',  Icon: Plus,        color: '#34d399', rgb: '52,211,153',  bg: 'rgba(52,211,153,0.08)',  border: 'rgba(52,211,153,0.2)'  },
-  melhoria: { label: 'Melhorias',  Icon: TrendingUp,  color: '#60a5fa', rgb: '96,165,250',  bg: 'rgba(96,165,250,0.08)',  border: 'rgba(96,165,250,0.2)'  },
-  correcao: { label: 'Correções',  Icon: Wrench,      color: '#fbbf24', rgb: '251,191,36',  bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.2)'  },
-  remocao:  { label: 'Removidos',  Icon: Trash2,      color: '#f87171', rgb: '248,113,113', bg: 'rgba(248,113,113,0.08)', border: 'rgba(248,113,113,0.2)' },
-};
-
 const TYPE_ORDER = ['novo', 'melhoria', 'correcao', 'remocao'];
 
-export default function UpdateDetailContent({ update }) {
+export default function UpdateDetailContent({ update: rawUpdate }) {
+  const { t, lang } = useLanguage();
   const [copied, setCopied] = useState(false);
 
+  // Helper to resolve translated update data
+  const resolveUpdate = (u) => {
+    const translated = t(`updates.${u.id}`);
+    if (translated && typeof translated === 'object') {
+      return {
+        ...u,
+        title: translated.title || u.title,
+        badge: translated.badge || u.badge,
+        summary: translated.summary || u.summary,
+        changes: translated.changes || u.changes,
+      };
+    }
+    return u;
+  };
+
+  const update = resolveUpdate(rawUpdate);
   const accent   = getAccent(update.badgeColor);
   const shareUrl = getUpdateUrl(update.id);
 
@@ -43,6 +56,14 @@ export default function UpdateDetailContent({ update }) {
     });
   };
 
+  // TYPE_CONFIG com labels dinâmicos do locale
+  const TYPE_CONFIG = {
+    novo:     { label: t('updatesPage.changeTypes.novo'),     Icon: Plus,       color: '#34d399', rgb: '52,211,153',  bg: 'rgba(52,211,153,0.08)',  border: 'rgba(52,211,153,0.2)'  },
+    melhoria: { label: t('updatesPage.changeTypes.melhoria'), Icon: TrendingUp, color: '#60a5fa', rgb: '96,165,250',  bg: 'rgba(96,165,250,0.08)',  border: 'rgba(96,165,250,0.2)'  },
+    correcao: { label: t('updatesPage.changeTypes.correcao'), Icon: Wrench,     color: '#fbbf24', rgb: '251,191,36',  bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.2)'  },
+    remocao:  { label: t('updatesPage.changeTypes.remocao'),  Icon: Trash2,     color: '#f87171', rgb: '248,113,113', bg: 'rgba(248,113,113,0.08)', border: 'rgba(248,113,113,0.2)' },
+  };
+
   const grouped = {};
   update.changes.forEach((c) => {
     if (!grouped[c.type]) grouped[c.type] = [];
@@ -50,8 +71,8 @@ export default function UpdateDetailContent({ update }) {
   });
 
   const idx  = UPDATES.findIndex((u) => u.id === update.id);
-  const prev = UPDATES[idx + 1];
-  const next = UPDATES[idx - 1];
+  const prev = UPDATES[idx + 1] ? resolveUpdate(UPDATES[idx + 1]) : null;
+  const next = UPDATES[idx - 1] ? resolveUpdate(UPDATES[idx - 1]) : null;
 
   return (
     <>
@@ -72,7 +93,7 @@ export default function UpdateDetailContent({ update }) {
             onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#475569'; }}
           >
-            <ArrowLeft size={14} /> Todas as atualizações
+            <ArrowLeft size={14} /> {t('updatesPage.backToAll')}
           </Link>
         </motion.div>
 
@@ -100,7 +121,7 @@ export default function UpdateDetailContent({ update }) {
               v{update.version}
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}>
-              <Calendar size={10} /> {formatDate(update.date)}
+              <Calendar size={10} /> {formatDate(update.date, lang)}
             </span>
           </div>
 
@@ -115,7 +136,7 @@ export default function UpdateDetailContent({ update }) {
           {/* Share bar */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.875rem 1rem', borderRadius: '0.875rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>Link desta atualização</p>
+              <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>{t('updatesPage.shareLink')}</p>
               <p style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shareUrl}</p>
             </div>
             <button
@@ -123,7 +144,7 @@ export default function UpdateDetailContent({ update }) {
               style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', borderRadius: '0.625rem', background: copied ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${copied ? 'rgba(52,211,153,0.25)' : 'rgba(255,255,255,0.08)'}`, fontSize: '0.8rem', fontWeight: 600, color: copied ? '#34d399' : '#94a3b8', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.2s' }}
             >
               {copied ? <Check size={13} /> : <Copy size={13} />}
-              {copied ? 'Copiado!' : 'Copiar'}
+              {copied ? t('updatesPage.copied') : t('updatesPage.copy')}
             </button>
           </div>
         </motion.div>
@@ -141,16 +162,16 @@ export default function UpdateDetailContent({ update }) {
           {TYPE_ORDER.map((type) => {
             const items = grouped[type];
             if (!items || items.length === 0) return null;
-            const t = TYPE_CONFIG[type];
-            const { Icon } = t;
+            const cfg = TYPE_CONFIG[type];
+            const { Icon } = cfg;
             return (
               <div key={type}>
                 {/* Cabeçalho do tipo */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.875rem' }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '0.5rem', background: t.bg, border: `1px solid ${t.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon size={13} style={{ color: t.color }} strokeWidth={2} />
+                  <div style={{ width: 28, height: 28, borderRadius: '0.5rem', background: cfg.bg, border: `1px solid ${cfg.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon size={13} style={{ color: cfg.color }} strokeWidth={2} />
                   </div>
-                  <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: t.color }}>{t.label}</span>
+                  <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: cfg.color }}>{cfg.label}</span>
                   <span style={{ fontSize: '0.7rem', color: '#94a3b8', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', padding: '1px 7px', borderRadius: 999 }}>{items.length}</span>
                   <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.05)' }} />
                 </div>
@@ -162,7 +183,7 @@ export default function UpdateDetailContent({ update }) {
                       key={i}
                       style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
                     >
-                      <div style={{ width: 5, height: 5, borderRadius: '50%', background: t.color, flexShrink: 0, marginTop: '0.45rem' }} />
+                      <div style={{ width: 5, height: 5, borderRadius: '50%', background: cfg.color, flexShrink: 0, marginTop: '0.45rem' }} />
                       <p style={{ fontSize: '0.875rem', color: '#cbd5e1', lineHeight: 1.65 }}>{change.text}</p>
                     </div>
                   ))}
@@ -177,7 +198,7 @@ export default function UpdateDetailContent({ update }) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
             {prev ? (
               <Link href={`/atualizacoes/${prev.id}`} style={{ textDecoration: 'none', maxWidth: '45%' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>← Anterior</p>
+                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>{t('updatesPage.prev')}</p>
                 <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
@@ -186,7 +207,7 @@ export default function UpdateDetailContent({ update }) {
             ) : <div />}
             {next ? (
               <Link href={`/atualizacoes/${next.id}`} style={{ textDecoration: 'none', maxWidth: '45%', textAlign: 'right' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>Próxima →</p>
+                <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#94a3b8', marginBottom: '0.25rem' }}>{t('updatesPage.next')}</p>
                 <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#94a3b8', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
@@ -198,14 +219,14 @@ export default function UpdateDetailContent({ update }) {
 
         {/* CTA final */}
         <div style={{ marginTop: '3rem', textAlign: 'center', padding: '2rem', borderRadius: '1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <p style={{ fontSize: '0.875rem', color: '#94a3b8', marginBottom: '1rem' }}>Quer aproveitar tudo isso?</p>
+          <p style={{ fontSize: '0.875rem', color: '#94a3b8', marginBottom: '1rem' }}>{t('updatesPage.ctaText')}</p>
           <a
             href="https://app.cursar.me/register"
             target="_blank"
             rel="noopener noreferrer"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.875rem 2rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 700, color: '#fff', textDecoration: 'none', background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
           >
-            Criar conta grátis
+            {t('updatesPage.cta')}
             <ArrowRight size={14} />
           </a>
         </div>

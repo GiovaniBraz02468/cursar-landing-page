@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Lock, Zap } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ModuleModal({ module: mod, onClose }) {
+  const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -27,6 +29,17 @@ export default function ModuleModal({ module: mod, onClose }) {
 
   if (!mod) return null;
   const IconComponent = Icons[mod.icon] || Icons.Layers;
+
+  // Dados traduzidos do módulo
+  const modTitle       = t(`modules.${mod.id}.title`);
+  const modTagline     = t(`modules.${mod.id}.tagline`);
+  const modDescription = t(`modules.${mod.id}.description`);
+  const modFeatures    = t(`modules.${mod.id}.features`);
+  const modLimitFree   = t(`modules.${mod.id}.limits.free`);
+  const modLimitPro    = t(`modules.${mod.id}.limits.pro`);
+  const soonLabel      = t('modulosPage.soon');
+  const featuresLabel  = t('modulosPage.features');
+  const startNow       = t('modulosPage.startNow');
 
   const panelStyle = isMobile
     ? { borderRadius: '1.5rem 1.5rem 0 0', maxHeight: '92vh', overflowY: 'auto', background: '#0d0c22', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 -8px 40px rgba(0,0,0,0.5)' }
@@ -55,23 +68,23 @@ export default function ModuleModal({ module: mod, onClose }) {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: '#fff' }}>{mod.title}</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: '#fff' }}>{modTitle}</h2>
           {mod.soon && (
             <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(245,158,11,0.15)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.25)', padding: '3px 8px', borderRadius: 999 }}>
-              Em breve
+              {soonLabel}
             </span>
           )}
         </div>
-        <p className={`text-sm font-medium mb-3 ${mod.color}`}>{mod.tagline}</p>
-        <p style={{ color: '#cbd5e1', fontSize: '0.875rem', lineHeight: 1.65 }}>{mod.description}</p>
+        <p className={`text-sm font-medium mb-3 ${mod.color}`}>{modTagline}</p>
+        <p style={{ color: '#cbd5e1', fontSize: '0.875rem', lineHeight: 1.65 }}>{modDescription}</p>
       </div>
 
       {/* Features */}
-      {mod.features && mod.features.length > 0 && (
+      {Array.isArray(modFeatures) && modFeatures.length > 0 && (
         <div style={{ padding: '0 1.5rem 1rem' }}>
-          <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', marginBottom: '0.75rem' }}>Funcionalidades</p>
+          <p style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#475569', marginBottom: '0.75rem' }}>{featuresLabel}</p>
           <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {mod.features.map((f, i) => (
+            {modFeatures.map((f, i) => (
               <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', color: '#cbd5e1' }}>
                 <Check size={15} className="text-emerald-400" style={{ marginTop: 2, flexShrink: 0 }} />
                 {f}
@@ -82,7 +95,7 @@ export default function ModuleModal({ module: mod, onClose }) {
       )}
 
       {/* Limits */}
-      {!mod.soon && mod.limits && (
+      {!mod.soon && modLimitFree && (
         <div style={{ margin: '0.5rem 1.5rem 1.5rem', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, padding: '1rem', borderRight: '1px solid rgba(255,255,255,0.05)' }}>
@@ -90,14 +103,14 @@ export default function ModuleModal({ module: mod, onClose }) {
                 <Lock size={12} color="#64748b" />
                 <span style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#64748b' }}>Free</span>
               </div>
-              <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{mod.limits.free}</p>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{modLimitFree}</p>
             </div>
             <div style={{ flex: 1, padding: '1rem', background: 'linear-gradient(135deg, rgba(129,140,248,0.06), rgba(192,132,252,0.06))' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: '0.5rem' }}>
                 <Zap size={12} color="#818cf8" />
                 <span style={{ fontSize: '0.625rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#818cf8' }}>Pro</span>
               </div>
-              <p style={{ fontSize: '0.75rem', color: '#e2e8f0' }}>{mod.limits.pro}</p>
+              <p style={{ fontSize: '0.75rem', color: '#e2e8f0' }}>{modLimitPro}</p>
             </div>
           </div>
         </div>
@@ -111,7 +124,7 @@ export default function ModuleModal({ module: mod, onClose }) {
           rel="noopener noreferrer"
           style={{ display: 'block', width: '100%', padding: '0.875rem', borderRadius: '1rem', fontSize: '0.875rem', fontWeight: 700, color: '#fff', textAlign: 'center', textDecoration: 'none', background: 'linear-gradient(135deg, #818cf8, #c084fc)', boxSizing: 'border-box' }}
         >
-          Começar grátis agora
+          {startNow}
         </a>
       </div>
     </>

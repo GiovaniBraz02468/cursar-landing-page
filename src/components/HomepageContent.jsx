@@ -4,19 +4,19 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 
-const imgTrabalho   = '/assets/trabalho.png';
-const imgTrabalho2  = '/assets/trabalho2.png';
-const imgTrabalho3  = '/assets/trabalho3.png';
-const imgTrabalho4  = '/assets/trabalho4.png';
-const imgPortfolio  = '/assets/portfolio.png';
+const imgTrabalho = '/assets/trabalho.png';
+const imgTrabalho2 = '/assets/trabalho2.png';
+const imgTrabalho3 = '/assets/trabalho3.png';
+const imgTrabalho4 = '/assets/trabalho4.png';
+const imgPortfolio = '/assets/portfolio.png';
 const imgPortfolio2 = '/assets/portfolio2.png';
 const imgPortfolio3 = '/assets/portfolio3.png';
 const imgPortfolio4 = '/assets/portfolio4.png';
-const imgDoc  = '/assets/doc.png';
+const imgDoc = '/assets/doc.png';
 const imgDoc2 = '/assets/doc2.png';
 const imgDoc3 = '/assets/doc3.png';
 const imgDoc4 = '/assets/doc4.png';
-const imgSocial  = '/assets/social.png';
+const imgSocial = '/assets/social.png';
 const imgSocial2 = '/assets/social2.png';
 const imgSocial3 = '/assets/social3.png';
 const imgSocial4 = '/assets/social4.png';
@@ -30,6 +30,7 @@ import {
   BookOpen, Briefcase, Dumbbell, FileUser, HardDrive, NotebookText,
 } from 'lucide-react';
 import { MODULES } from '../data/modulesData';
+import { useLanguage } from '../context/LanguageContext';
 
 // Icon map for dynamic lookup from modulesData
 const ICON_MAP = { BookOpen, Briefcase, Dumbbell, FileText, FileUser, Globe, HardDrive, Heart, Layers, MessageSquare, NotebookText, Sparkles, Users };
@@ -73,53 +74,52 @@ function BrowserFrame({ children, accentColor = 'rgba(129,140,248,0.15)' }) {
 
 // ── Section mockups ──────────────────────────────────────────────────────────
 function WorksMockup() {
+  const { t } = useLanguage();
   return (
     <BrowserFrame accentColor="rgba(16,185,129,0.12)">
       <div className="p-5">
         <div className="flex gap-1.5 mb-4 border-b border-white/5 pb-3">
-          {['Quadro', 'Mochila', 'Mural', 'Ajustes'].map((t, i) => (
+          {[t('homepage.mockups.works.tabs.board'), t('homepage.mockups.works.tabs.backpack'), t('homepage.mockups.works.tabs.mural'), t('homepage.mockups.works.tabs.settings')].map((tab, i) => (
             <div
-              key={t}
-              className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg ${
-                i === 0
+              key={tab}
+              className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg ${i === 0
                   ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
                   : 'text-slate-600'
-              }`}
+                }`}
             >
-              {t}
+              {tab}
             </div>
           ))}
         </div>
 
         <div className="flex gap-3 mb-1">
-          <div className="text-[9px] font-black text-slate-600 uppercase tracking-wider px-2">Sprint 2 · 5 dias restantes</div>
+          <div className="text-[9px] font-black text-slate-600 uppercase tracking-wider px-2">Sprint 2 · 5 {t('common.daysRemaining')}</div>
         </div>
 
         <div className="grid grid-cols-3 gap-2.5 mt-2">
           {[
-            { label: 'A Fazer', color: 'text-slate-500', cards: ['Revisar cronograma', 'Criar apresentação'] },
-            { label: 'Em andamento', color: 'text-yellow-400', cards: ['Desenvolver backend'] },
-            { label: 'Concluído', color: 'text-emerald-400', cards: ['Setup inicial', 'Wireframes'] },
-          ].map(({ label, color, cards }) => (
-            <div key={label}>
+            { label: t('homepage.mockups.works.status.todo'), color: 'text-slate-500', cards: [t('homepage.mockups.works.cards.review'), t('homepage.mockups.works.cards.presentation')], key: 'todo' },
+            { label: t('homepage.mockups.works.status.doing'), color: 'text-yellow-400', cards: [t('homepage.mockups.works.cards.backend')], key: 'doing' },
+            { label: t('homepage.mockups.works.status.done'), color: 'text-emerald-400', cards: [t('homepage.mockups.works.cards.setup'), t('homepage.mockups.works.cards.wireframes')], key: 'done' },
+          ].map(({ label, color, cards, key }) => (
+            <div key={key}>
               <div className={`text-[9px] font-black uppercase tracking-wider mb-2 ${color}`}>{label}</div>
               <div className="space-y-2">
-                {cards.map((c) => (
-                  <div key={c} className="p-2.5 rounded-xl bg-white/[0.04] border border-white/5">
+                {cards.map((c, ci) => (
+                  <div key={ci} className="p-2.5 rounded-xl bg-white/[0.04] border border-white/5">
                     <div className="text-[10px] text-slate-300 mb-2">{c}</div>
                     <div className="flex items-center gap-2">
                       <div className="flex -space-x-1">
                         <div className="w-3.5 h-3.5 rounded-full bg-indigo-500/50 border border-[#0a091e]" />
                         <div className="w-3.5 h-3.5 rounded-full bg-pink-500/40 border border-[#0a091e]" />
                       </div>
-                      <div className={`ml-auto text-[8px] px-1.5 py-0.5 rounded-full ${
-                        c === 'Desenvolver backend'
+                      <div className={`ml-auto text-[8px] px-1.5 py-0.5 rounded-full ${key === 'doing'
                           ? 'bg-yellow-500/15 text-yellow-400'
-                          : c === 'Setup inicial' || c === 'Wireframes'
-                          ? 'bg-emerald-500/15 text-emerald-400'
-                          : 'bg-white/5 text-slate-600'
-                      }`}>
-                        {c === 'Desenvolver backend' ? 'Alta' : c === 'Setup inicial' || c === 'Wireframes' ? 'Feito' : 'Média'}
+                          : key === 'done'
+                            ? 'bg-emerald-500/15 text-emerald-400'
+                            : 'bg-white/5 text-slate-600'
+                        }`}>
+                        {key === 'doing' ? t('homepage.mockups.works.priorities.high') : key === 'done' ? t('homepage.mockups.works.priorities.done') : t('homepage.mockups.works.priorities.medium')}
                       </div>
                     </div>
                   </div>
@@ -134,6 +134,7 @@ function WorksMockup() {
 }
 
 function PortfolioMockup() {
+  const { t } = useLanguage();
   return (
     <BrowserFrame accentColor="rgba(239,68,68,0.12)">
       <div className="p-5">
@@ -141,7 +142,7 @@ function PortfolioMockup() {
           <div className="h-20 bg-gradient-to-br from-red-500/25 via-rose-600/10 to-transparent flex items-end px-4 pb-3">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-red-400/60" />
-              <span className="text-[10px] text-red-400/70 font-semibold">Case — Redesign do App Mobile</span>
+              <span className="text-[10px] text-red-400/70 font-semibold">{t('homepage.mockups.portfolio.caseTitle')}</span>
             </div>
           </div>
 
@@ -174,9 +175,9 @@ function PortfolioMockup() {
 
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 text-[9px] text-slate-600">
-                <Eye size={8} /> 284 visualizações
+                <Eye size={8} /> 284 {t('common.views')}
               </div>
-              <div className="flex -space-x-1 ml-auto" title="Co-autores">
+              <div className="flex -space-x-1 ml-auto" title={t('homepage.mockups.portfolio.coAuthors')}>
                 {['bg-indigo-500/60', 'bg-pink-500/50', 'bg-emerald-500/50'].map((c, i) => (
                   <div key={i} className={`w-4 h-4 rounded-full border border-[#0a091e] ${c}`} />
                 ))}
@@ -190,17 +191,17 @@ function PortfolioMockup() {
 }
 
 function DocumentMockup() {
+  const { t } = useLanguage();
   return (
     <BrowserFrame accentColor="rgba(6,182,212,0.12)">
       <div className="p-5 flex gap-4">
         <div className="w-24 flex-shrink-0 border-r border-white/5 pr-3">
-          <div className="text-[8px] font-black text-slate-600 uppercase tracking-wider mb-2.5">Sumário</div>
-          {['Introdução', 'Contexto', 'Método', 'Resultado', 'Conclusão'].map((s, i) => (
+          <div className="text-[8px] font-black text-slate-600 uppercase tracking-wider mb-2.5">{t('homepage.mockups.document.summary')}</div>
+          {[t('homepage.mockups.document.sections.intro'), t('homepage.mockups.document.sections.context'), t('homepage.mockups.document.sections.method'), t('homepage.mockups.document.sections.result'), t('homepage.mockups.document.sections.conclusion')].map((s, i) => (
             <div
               key={s}
-              className={`text-[10px] py-1 px-1.5 rounded mb-0.5 cursor-default ${
-                i === 2 ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600 hover:text-slate-400'
-              }`}
+              className={`text-[10px] py-1 px-1.5 rounded mb-0.5 cursor-default ${i === 2 ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600 hover:text-slate-400'
+                }`}
             >
               {s}
             </div>
@@ -208,7 +209,7 @@ function DocumentMockup() {
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="text-[8px] text-slate-600 mb-2">Página 3 de 8</div>
+          <div className="text-[8px] text-slate-600 mb-2">{t('homepage.mockups.document.pageInfo')}</div>
           <div className="h-3.5 w-3/4 bg-white/12 rounded-full mb-3" />
 
           <div className="space-y-1.5 mb-3">
@@ -228,10 +229,10 @@ function DocumentMockup() {
 
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex items-center gap-1 text-[8px] text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">
-              <Link2 size={7} /> Link público ativo
+              <Link2 size={7} /> {t('homepage.mockups.document.publicLink')}
             </div>
             <div className="flex items-center gap-1 text-[8px] text-slate-600">
-              <Heart size={7} /> 42 curtidas
+              <Heart size={7} /> 42 {t('common.likes')}
             </div>
           </div>
         </div>
@@ -241,6 +242,7 @@ function DocumentMockup() {
 }
 
 function ProfileMockup() {
+  const { t } = useLanguage();
   return (
     <BrowserFrame accentColor="rgba(99,102,241,0.12)">
       <div className="p-5">
@@ -258,27 +260,25 @@ function ProfileMockup() {
         </div>
 
         <div className="flex gap-4 mb-4 border-b border-white/5 pb-3">
-          {['Início', 'Portfólio', 'Formação', 'Carreira'].map((t, i) => (
+          {[t('homepage.mockups.profile.tabs.home'), t('homepage.mockups.profile.tabs.portfolio'), t('homepage.mockups.profile.tabs.education'), t('homepage.mockups.profile.tabs.career')].map((tab, i) => (
             <div
-              key={t}
-              className={`text-[10px] font-medium pb-3 -mb-3 ${
-                i === 0
+              key={tab}
+              className={`text-[10px] font-medium pb-3 -mb-3 ${i === 0
                   ? 'text-indigo-400 border-b-2 border-indigo-400'
                   : 'text-slate-600'
-              }`}
+                }`}
             >
-              {t}
+              {tab}
             </div>
           ))}
         </div>
 
         <div className="space-y-1.5">
-          {['Portfólio no Cursar', 'LinkedIn', 'GitHub'].map((l, i) => (
+          {[t('homepage.mockups.profile.links.portfolio'), 'LinkedIn', 'GitHub'].map((l, i) => (
             <div key={l} className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.03] border border-white/5">
               <div
-                className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                  i === 0 ? 'bg-indigo-400' : i === 1 ? 'bg-blue-400' : 'bg-slate-400'
-                }`}
+                className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${i === 0 ? 'bg-indigo-400' : i === 1 ? 'bg-blue-400' : 'bg-slate-400'
+                  }`}
               />
               <span className="text-[10px] text-slate-400">{l}</span>
               <ArrowRight size={8} className="text-slate-600 ml-auto" />
@@ -323,631 +323,605 @@ function ImageCarousel({ images }) {
   );
 }
 
-// ── Feature sections config ──────────────────────────────────────────────────
-const FEATURE_SECTIONS = [
-  {
-    id: 'trabalhos',
-    eyebrow: 'Módulo Trabalhos',
-    titleLine1: 'Gestão de projetos em equipe,',
-    titleLine2: 'do jeito certo.',
-    description:
-      'Organize seus projetos com Kanban ou Scrum completo. Convide colegas, atribua tarefas, anexe arquivos e se comunique em grupo — tudo dentro do mesmo espaço.',
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-500/20',
-    accentRgb: '16,185,129',
-    features: [
-      { icon: Layout,        text: 'Scrum com Sprints e backlog' },
-      { icon: Users,         text: 'Membros e responsáveis por cartão' },
-      { icon: Paperclip,     text: 'Recursos e anexos centralizados' },
-      { icon: MessageSquare, text: 'chat de grupo com enquetes' },
-      { icon: CheckSquare,   text: 'Cartões com prioridades e checklists' },
-    ],
-    limit: { free: '2 trabalhos simultâneos', pro: 'Trabalhos ilimitados' },
-    imgSrc: imgTrabalho,
-    images: [imgTrabalho, imgTrabalho2, imgTrabalho3, imgTrabalho4],
-  },
-  {
-    id: 'portfolio',
-    eyebrow: 'Módulo Portfólio',
-    titleLine1: 'Sua vitrine profissional,',
-    titleLine2: 'construída em blocos.',
-    description:
-      'Crie Cases de projeto no estilo Notion. Adicione textos, imagens, galerias e mais. Colabore com outros usuários do Cursar e controle o que o mundo pode ver.',
-    color: 'text-red-400',
-    bg: 'bg-red-500/10',
-    border: 'border-red-500/20',
-    accentRgb: '239,68,68',
-    features: [
-      { icon: Layout, text: 'Editor em blocos estilo Notion' },
-      { icon: Layers, text: 'Galerias, citações e músicas' },
-      { icon: Users,  text: 'Colaboração com outros usuários' },
-      { icon: Eye,    text: 'Visibilidade pública por projeto' },
-      { icon: Tag,    text: 'Tags e filtros para seus cases' },
-    ],
-    limit: { free: '5 projetos (3 públicos)', pro: 'Projetos ilimitados' },
-    imgSrc: imgPortfolio,
-    images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
-  },
-  {
-    id: 'documento',
-    eyebrow: 'Módulo Documento',
-    titleLine1: 'Documentos com sumário',
-    titleLine2: 'automático e link público.',
-    description:
-      'Editor avançado em blocos com paginação, navegação por sumário automático e capa personalizada. Compartilhe via link público e receba curtidas da comunidade.',
-    color: 'text-cyan-400',
-    bg: 'bg-cyan-500/10',
-    border: 'border-cyan-500/20',
-    accentRgb: '6,182,212',
-    features: [
-      { icon: FileText, text: 'Editor em blocos com paginação' },
-      { icon: Layout,   text: 'Sumário para navegação' },
-      { icon: Link2,    text: 'Link público compartilhável' },
-      { icon: Heart,    text: 'Curtidas da comunidade' },
-      { icon: Eye,      text: 'Capa personalizada' },
-    ],
-    limit: { free: 'Disponível em múltiplas áreas', pro: 'Recursos avançados desbloqueados' },
-    imgSrc: imgDoc,
-    images: [imgDoc, imgDoc2, imgDoc3, imgDoc4],
-  },
-  {
-    id: 'perfil',
-    eyebrow: 'Perfil Público',
-    titleLine1: 'Um link só.',
-    titleLine2: 'Tudo que você é.',
-    description:
-      'Sua página pública em app.cursar.me/seunome. Configure as abas que quer exibir: bio e links, portfólio, formação, carreira e biblioteca. O seu super link profissional.',
-    color: 'text-indigo-400',
-    bg: 'bg-indigo-500/10',
-    border: 'border-indigo-500/20',
-    accentRgb: '99,102,241',
-    features: [
-      { icon: Globe,   text: 'URL própria: /seunome' },
-      { icon: Layout,  text: 'Abas: Portfólio, Formação, Carreira' },
-      { icon: Share2,  text: 'Bio, foto e links personalizáveis' },
-      { icon: Eye,     text: 'Visibilidade configurável por seção' },
-    ],
-    limit: { free: 'Perfil público completo', pro: 'Visitantes revelados + conexões ilimitadas' },
-    imgSrc: imgSocial,
-    images: [imgSocial, imgSocial2, imgSocial3, imgSocial4, imgSocial5, imgSocial6],
-  },
-];
-
-// ── Pricing ──────────────────────────────────────────────────────────────────
-const PLANS = [
-  {
-    name: 'Free',
-    price: 'R$ 0',
-    per: 'para sempre',
-    color: 'border-white/10',
-    cta: 'Criar conta grátis',
-    ctaStyle: 'bg-white/10 hover:bg-white/15 text-white border border-white/10',
-    features: [
-      '3 cursos + 1 roadmap de estudo',
-      '5 projetos no portfólio (3 públicos)',
-      '3 experiências de carreira',
-      '15 notas e 5 eventos com alerta',
-      '2 trabalhos em equipe',
-      '500 MB no Drive',
-      '20 conexões na rede',
-      'Perfil público completo',
-    ],
-  },
-  {
-    name: 'Pro',
-    price: 'R$ 10,82',
-    per: 'por mês no plano anual',
-    highlight: true,
-    badge: 'Melhor custo-benefício',
-    color: 'border-indigo-500/40',
-    cta: 'Assinar Pro agora',
-    features: [
-      'Tudo do Free, sem limites',
-      'Cursos e roadmaps ilimitados',
-      'Portfólio e projetos ilimitados',
-      'Carreira e currículos ilimitados',
-      'Notas, eventos e trabalhos ilimitados',
-      '15 GB no Drive',
-      'Conexões ilimitadas na rede',
-      'Veja quem visitou seu perfil',
-    ],
-    otherPrices: [
-      { label: 'Mensal',    price: 'R$ 14,99/mês' },
-      { label: 'Semestral', price: 'R$ 12,48/mês' },
-    ],
-  },
-];
-
 // ── Main component ────────────────────────────────────────────────────────────
 export default function HomePage() {
+  const { t } = useLanguage();
   const half = Math.ceil(MODULES.length / 2);
   const modulesA = MODULES.slice(0, half);
   const modulesB = MODULES.slice(half);
   const carouselA = [...modulesA, ...modulesA, ...modulesA, ...modulesA];
   const carouselB = [...modulesB, ...modulesB, ...modulesB, ...modulesB];
 
+  const FEATURE_SECTIONS = [
+    {
+      id: 'trabalhos',
+      eyebrow: t('homepage.sections.works.eyebrow'),
+      titleLine1: t('homepage.sections.works.title1'),
+      titleLine2: t('homepage.sections.works.title2'),
+      description: t('homepage.sections.works.description'),
+      color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', accentRgb: '16,185,129',
+      features: [
+        { icon: Layout,        text: t('homepage.sections.works.features.scrum') },
+        { icon: Users,         text: t('homepage.sections.works.features.members') },
+        { icon: Paperclip,     text: t('homepage.sections.works.features.resources') },
+        { icon: MessageSquare, text: t('homepage.sections.works.features.chat') },
+        { icon: CheckSquare,   text: t('homepage.sections.works.features.cards') },
+      ],
+      limit: { free: t('homepage.sections.works.limit.free'), pro: t('homepage.sections.works.limit.pro') },
+      images: [imgTrabalho, imgTrabalho2, imgTrabalho3, imgTrabalho4],
+    },
+    {
+      id: 'portfolio',
+      eyebrow: t('homepage.sections.portfolio.eyebrow'),
+      titleLine1: t('homepage.sections.portfolio.title1'),
+      titleLine2: t('homepage.sections.portfolio.title2'),
+      description: t('homepage.sections.portfolio.description'),
+      color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', accentRgb: '239,68,68',
+      features: [
+        { icon: Layout, text: t('homepage.sections.portfolio.features.editor') },
+        { icon: Layers, text: t('homepage.sections.portfolio.features.blocks') },
+        { icon: Users,  text: t('homepage.sections.portfolio.features.collaboration') },
+        { icon: Eye,    text: t('homepage.sections.portfolio.features.visibility') },
+        { icon: Tag,    text: t('homepage.sections.portfolio.features.tags') },
+      ],
+      limit: { free: t('homepage.sections.portfolio.limit.free'), pro: t('homepage.sections.portfolio.limit.pro') },
+      images: [imgPortfolio, imgPortfolio2, imgPortfolio3, imgPortfolio4],
+    },
+    {
+      id: 'documento',
+      eyebrow: t('homepage.sections.document.eyebrow'),
+      titleLine1: t('homepage.sections.document.title1'),
+      titleLine2: t('homepage.sections.document.title2'),
+      description: t('homepage.sections.document.description'),
+      color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20', accentRgb: '6,182,212',
+      features: [
+        { icon: FileText, text: t('homepage.sections.document.features.editor') },
+        { icon: Layout,   text: t('homepage.sections.document.features.summary') },
+        { icon: Link2,    text: t('homepage.sections.document.features.link') },
+        { icon: Heart,    text: t('homepage.sections.document.features.likes') },
+        { icon: Eye,      text: t('homepage.sections.document.features.cover') },
+      ],
+      limit: { free: t('homepage.sections.document.limit.free'), pro: t('homepage.sections.document.limit.pro') },
+      images: [imgDoc, imgDoc2, imgDoc3, imgDoc4],
+    },
+    {
+      id: 'perfil',
+      eyebrow: t('homepage.sections.profile.eyebrow'),
+      titleLine1: t('homepage.sections.profile.title1'),
+      titleLine2: t('homepage.sections.profile.title2'),
+      description: t('homepage.sections.profile.description'),
+      color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', accentRgb: '99,102,241',
+      features: [
+        { icon: Globe,  text: t('homepage.sections.profile.features.url') },
+        { icon: Layout, text: t('homepage.sections.profile.features.tabs') },
+        { icon: Share2, text: t('homepage.sections.profile.features.bio') },
+        { icon: Eye,    text: t('homepage.sections.profile.features.visibility') },
+      ],
+      limit: { free: t('homepage.sections.profile.limit.free'), pro: t('homepage.sections.profile.limit.pro') },
+      images: [imgSocial, imgSocial2, imgSocial3, imgSocial4, imgSocial5, imgSocial6],
+    },
+  ];
+
+  const PLANS = [
+    {
+      name: t('homepage.pricing.free.name'),
+      price: t('homepage.pricing.free.price'),
+      per: t('homepage.pricing.free.per'),
+      color: 'border-white/10',
+      cta: t('homepage.pricing.free.cta'),
+      ctaStyle: 'bg-white/10 hover:bg-white/15 text-white border border-white/10',
+      features: [
+        t('homepage.pricing.free.features.courses'),
+        t('homepage.pricing.free.features.portfolio'),
+        t('homepage.pricing.free.features.career'),
+        t('homepage.pricing.free.features.notes'),
+        t('homepage.pricing.free.features.works'),
+        t('homepage.pricing.free.features.drive'),
+        t('homepage.pricing.free.features.connections'),
+        t('homepage.pricing.free.features.profile'),
+      ],
+    },
+    {
+      name: t('homepage.pricing.pro.name'),
+      price: t('homepage.pricing.pro.price'),
+      per: t('homepage.pricing.pro.per'),
+      highlight: true,
+      badge: t('homepage.pricing.pro.badge'),
+      color: 'border-indigo-500/40',
+      cta: t('homepage.pricing.pro.cta'),
+      features: [
+        t('homepage.pricing.pro.features.unlimited'),
+        t('homepage.pricing.pro.features.courses'),
+        t('homepage.pricing.pro.features.portfolio'),
+        t('homepage.pricing.pro.features.career'),
+        t('homepage.pricing.pro.features.notes'),
+        t('homepage.pricing.pro.features.drive'),
+        t('homepage.pricing.pro.features.connections'),
+        t('homepage.pricing.pro.features.visitors'),
+      ],
+      otherPrices: [
+        { label: t('homepage.pricing.pro.otherPrices.monthly.label'), price: t('homepage.pricing.pro.otherPrices.monthly.price') },
+        { label: t('homepage.pricing.pro.otherPrices.semiannual.label'), price: t('homepage.pricing.pro.otherPrices.semiannual.price') },
+      ],
+    },
+  ];
 
   return (
     <>
-    <div
-      className="min-h-screen text-white overflow-x-hidden relative"
-      style={{ background: '#0a091e' }}
-    >
-      {/* ── Glow de página — não clipado por nenhuma section ── */}
-      <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '140vh', zIndex: 0 }}>
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-[900px]"
-          style={{ background: 'radial-gradient(ellipse at 50% 15%, rgba(99,102,241,0.28) 0%, rgba(129,140,248,0.12) 45%, transparent 72%)' }}
-        />
-        <div
-          className="absolute top-1/4 -left-40 w-[700px] h-[700px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(ellipse, rgba(192,132,252,0.6) 0%, transparent 65%)' }}
-        />
-        <div
-          className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full opacity-10"
-          style={{ background: 'radial-gradient(ellipse, rgba(244,114,182,0.5) 0%, transparent 65%)' }}
-        />
-      </div>
-
-      {/* ── 1. HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative flex flex-col items-center text-center px-6 pt-32 pb-10" style={{ zIndex: 1 }}>
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div
+        className="min-h-screen text-white overflow-x-hidden relative"
+        style={{ background: '#0a091e' }}
+      >
+        {/* ── Glow de página — não clipado por nenhuma section ── */}
+        <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '140vh', zIndex: 0 }}>
           <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-              backgroundSize: '60px 60px',
-            }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-[900px]"
+            style={{ background: 'radial-gradient(ellipse at 50% 15%, rgba(99,102,241,0.28) 0%, rgba(129,140,248,0.12) 45%, transparent 72%)' }}
+          />
+          <div
+            className="absolute top-1/4 -left-40 w-[700px] h-[700px] rounded-full opacity-15"
+            style={{ background: 'radial-gradient(ellipse, rgba(192,132,252,0.6) 0%, transparent 65%)' }}
+          />
+          <div
+            className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full opacity-10"
+            style={{ background: 'radial-gradient(ellipse, rgba(244,114,182,0.5) 0%, transparent 65%)' }}
           />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <div
-            className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-8"
-            style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0s' }}
-          >
-            <Sparkles size={12} />
-            Plataforma All-in-One
-          </div>
-
-          <h1
-            className="font-black leading-[1.08] tracking-tight mb-6"
-            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.1s' }}
-          >
-            Sua jornada,{' '}
-            <span
-              className="inline-block"
-              style={{
-                background: 'linear-gradient(90deg, #818cf8, #c084fc, #f472b6, #818cf8)',
-                backgroundSize: '300%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                animation: 'gradientMove 8s ease infinite',
-              }}
-            >
-              um só lugar.
-            </span>
-          </h1>
-
-          <p
-            className="text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto"
-            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.125rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.2s' }}
-          >
-            Chega de 10 abas abertas. O Cursar.me reúne estudos, portfólio, projetos em equipe e currículo — tudo integrado.
-          </p>
-
-          <div
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.3s' }}
-          >
-            {/* Começar grátis */}
-            <a
-              href="https://app.cursar.me/register"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 text-sm font-bold text-white transition-all duration-200 active:scale-[0.97]"
-              style={{
-                padding: '0.75rem 1.75rem',
-                borderRadius: '0.875rem',
-                background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc)',
-                boxShadow: '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
-                transition: 'box-shadow 0.2s ease, transform 0.2s ease',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 45px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1.04)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1)'; }}
-            >
-              Começar grátis
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </a>
-
-            {/* Ver todos os módulos — borda gradiente */}
-            <div style={{
-              padding: '1px',
-              borderRadius: '0.875rem',
-              background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc, #f472b6)',
-            }}>
-              <Link
-                href="/modulos"
-                className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors duration-200"
-                style={{
-                  padding: '0.7rem 1.6rem',
-                  borderRadius: 'calc(0.875rem - 1px)',
-                  background: '#0a091e',
-                  display: 'flex',
-                }}
-              >
-                Ver todos os módulos
-              </Link>
-            </div>
-          </div>
-
-          <p
-            className="mt-8 text-xs text-slate-400 font-medium"
-            style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.4s' }}
-          >
-            Gratuito para começar · Sem cartão de crédito · Upgrade quando quiser
-          </p>
-        </div>
-
-      </section>
-
-      {/* ── 2. MODULES CAROUSEL ──────────────────────────────────────────────── */}
-      <section className="py-10 overflow-hidden" style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.7s' }}>
-        <div className="text-center mb-12 px-6 sm:px-8">
-          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
-            <Sparkles size={12} />
-            O que você ganha
-          </div>
-          <h2
-            className="text-3xl sm:text-4xl font-black tracking-tight"
-          >
-            Um ecossistema completo,
-            <br />
-            <span className="text-slate-500">a sua disposição.</span>
-          </h2>
-        </div>
-
-        <div className="relative select-none">
-          {/* Edge fades */}
-          <div
-            className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{ background: 'linear-gradient(to right, #0a091e, transparent)' }}
-          />
-          <div
-            className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{ background: 'linear-gradient(to left, #0a091e, transparent)' }}
-          />
-
-          {/* Row 1 — left */}
-          <div className="overflow-hidden mb-3">
-            <div className="carousel-track-left flex">
-              {carouselA.map((mod, i) => {
-                const Icon = ICON_MAP[mod.icon] || Layers;
-                return (
-                  <div
-                    key={`a-${mod.id}-${i}`}
-                    className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border mx-2 ${mod.bg} ${mod.border}`}
-                    style={{ minWidth: '195px' }}
-                  >
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${mod.bg} border ${mod.border}`}>
-                      <Icon size={15} className={mod.color} strokeWidth={1.5} />
-                    </div>
-                    <div className="min-w-0">
-                      <div className={`text-xs font-bold leading-tight ${mod.color}`}>{mod.title}</div>
-                      <div className="text-[9px] text-slate-600 mt-0.5 truncate">
-                        {mod.soon ? 'Em breve' : mod.tagline}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Row 2 — right */}
-          <div className="overflow-hidden">
-            <div className="carousel-track-right flex" style={{ transform: 'translateX(-50%)' }}>
-              {carouselB.map((mod, i) => {
-                const Icon = ICON_MAP[mod.icon] || Layers;
-                return (
-                  <div
-                    key={`b-${mod.id}-${i}`}
-                    className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border mx-2 ${mod.bg} ${mod.border}`}
-                    style={{ minWidth: '195px' }}
-                  >
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${mod.bg} border ${mod.border}`}>
-                      <Icon size={15} className={mod.color} strokeWidth={1.5} />
-                    </div>
-                    <div className="min-w-0">
-                      <div className={`text-xs font-bold leading-tight ${mod.color}`}>{mod.title}</div>
-                      <div className="text-[9px] text-slate-600 mt-0.5 truncate">
-                        {mod.soon ? 'Em breve' : mod.tagline}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        <InView className="text-center mt-12 px-6 sm:px-8">
-          <Link
-            href="/modulos"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group"
-          >
-            Ver todos os módulos em detalhe
-            <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-          </Link>
-        </InView>
-      </section>
-
-      {/* ── 3–6. FEATURE SECTIONS — centralizado, imagem abaixo ─────────────── */}
-      {FEATURE_SECTIONS.map((section, si) => (
-        <section key={section.id} id={section.id} className="relative py-14 px-6 sm:px-8 overflow-hidden" style={{ scrollMarginTop: '80px' }}>
-          {/* Ambient glow */}
-          <div className="absolute inset-0 pointer-events-none">
+        {/* ── 1. HERO ──────────────────────────────────────────────────────────── */}
+        <section className="relative flex flex-col items-center text-center px-6 pt-32 pb-10" style={{ zIndex: 1 }}>
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full opacity-[0.055]"
-              style={{ background: `radial-gradient(ellipse, rgba(${section.accentRgb},1) 0%, transparent 65%)` }}
+              className="absolute inset-0 opacity-[0.02]"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+                backgroundSize: '60px 60px',
+              }}
             />
           </div>
 
-          <div className="max-w-4xl mx-auto relative z-10">
-            {/* ── Texto — centralizado ── */}
-            <InView className="text-center mb-10">
-              <div
-                className={`inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full border mb-6 ${section.bg} ${section.border} ${section.color}`}
-              >
-                {section.eyebrow}
-              </div>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <div
+              className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-8"
+              style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0s' }}
+            >
+              <Sparkles size={12} />
+              {t('homepage.hero.badge')}
+            </div>
 
-              <h2
-                className="font-black tracking-tight mb-5"
-                style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.875rem)' }}
-              >
-                {section.titleLine1}
-                <br />
-                <span className="text-slate-400">{section.titleLine2}</span>
-              </h2>
-
-              <p className="text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto mb-6">
-                {section.description}
-              </p>
-
-              {/* ── Feature badges — grid 2 colunas ── */}
-              <div
-                className="feature-grid mb-6 mx-auto"
-                style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 260px))', justifyContent: 'center', gap: '0.5rem' }}
-              >
-                {section.features.map(({ icon: FeatureIcon, text }, fi) => (
-                  <div
-                    key={fi}
-                    className={`feature-badge flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold ${section.bg} ${section.border} ${section.color}`}
-                  >
-                    <FeatureIcon size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
-                    {text}
-                  </div>
-                ))}
-              </div>
-
-              {/* Limite Free / Pro */}
-              <div className="flex gap-2.5 justify-center flex-wrap">
-                <span className="text-xs font-semibold text-slate-500 bg-white/[0.04] border border-white/10 px-4 py-1.5 rounded-full whitespace-nowrap">
-                  Free: {section.limit.free}
-                </span>
-                <span
-                  className={`text-xs font-semibold px-4 py-1.5 rounded-full border whitespace-nowrap ${section.bg} ${section.border} ${section.color}`}
-                >
-                  Pro: {section.limit.pro}
-                </span>
-              </div>
-            </InView>
-
-            {/* ── Imagem — sempre abaixo, substitua src ── */}
-            <InView delay={0.1}>
-              <div
-                className={`rounded-2xl overflow-hidden border ${section.border} bg-white/[0.02]`}
+            <h1
+              className="font-black leading-[1.08] tracking-tight mb-6"
+              style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.1s' }}
+            >
+              {t('homepage.hero.title1')}{' '}
+              <span
+                className="inline-block"
                 style={{
-                  boxShadow: `0 0 60px rgba(${section.accentRgb},0.08)`,
-                  animation: 'imageFloat 4s ease-in-out infinite',
-                  animationDelay: `${si * 0.7}s`,
+                  background: 'linear-gradient(90deg, #818cf8, #c084fc, #f472b6, #818cf8)',
+                  backgroundSize: '300%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'gradientMove 8s ease infinite',
                 }}
               >
-                {section.images ? (
-                  <ImageCarousel images={section.images} />
-                ) : section.imgSrc ? (
-                  <img
-                    src={section.imgSrc}
-                    alt={`Screenshot — ${section.eyebrow}`}
-                    className="w-full block"
-                    style={{ objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div
-                    className={`flex items-center justify-center flex-col gap-3 py-24 ${section.bg}`}
-                    style={{ minHeight: '260px' }}
-                  >
-                    <LucideIcons.Image size={48} className={`opacity-25 ${section.color}`} />
-                    <p className="text-xs text-slate-600 text-center">Screenshot em breve</p>
-                  </div>
-                )}
-              </div>
-            </InView>
-          </div>
-        </section>
-      ))}
+                {t('homepage.hero.titleGradient')}
+              </span>
+            </h1>
 
-      {/* ── 7. PRICING ───────────────────────────────────────────────────────── */}
-      <section id="precos" className="relative py-24 px-6 sm:px-8" style={{ scrollMarginTop: '80px' }}>
-        <div className="max-w-4xl mx-auto">
-          <InView className="text-center mb-16">
+            <p
+              className="text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto"
+              style={{ fontSize: 'clamp(0.95rem, 2vw, 1.125rem)', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.2s' }}
+            >
+              {t('homepage.hero.subtitle')}
+            </p>
+
+            <div
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.3s' }}
+            >
+              {/* Começar grátis */}
+              <a
+                href="https://app.cursar.me/register"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 text-sm font-bold text-white transition-all duration-200 active:scale-[0.97]"
+                style={{
+                  padding: '0.75rem 1.75rem',
+                  borderRadius: '0.875rem',
+                  background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc)',
+                  boxShadow: '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
+                  transition: 'box-shadow 0.2s ease, transform 0.2s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 45px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1.04)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1)'; }}
+              >
+                {t('common.startFree')}
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+              </a>
+
+              {/* Ver todos os módulos — borda gradiente */}
+              <div style={{
+                padding: '1px',
+                borderRadius: '0.875rem',
+                background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #c084fc, #f472b6)',
+              }}>
+                <Link
+                  href="/modulos"
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors duration-200"
+                  style={{
+                    padding: '0.7rem 1.6rem',
+                    borderRadius: 'calc(0.875rem - 1px)',
+                    background: '#0a091e',
+                    display: 'flex',
+                  }}
+                >
+                  {t('homepage.hero.ctaSecondary')}
+                </Link>
+              </div>
+            </div>
+
+            <p
+              className="mt-8 text-xs text-slate-400 font-medium"
+              style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.4s' }}
+            >
+              {t('homepage.hero.disclaimer')}
+            </p>
+          </div>
+
+        </section>
+
+        {/* ── 2. MODULES CAROUSEL ──────────────────────────────────────────────── */}
+        <section className="py-10 overflow-hidden" style={{ animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.7s' }}>
+          <div className="text-center mb-12 px-6 sm:px-8">
             <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
               <Sparkles size={12} />
-              Planos
+              {t('homepage.modules.badge')}
             </div>
             <h2
-              className="text-3xl sm:text-4xl font-black tracking-tight mb-4"
-              
+              className="text-3xl sm:text-4xl font-black tracking-tight"
             >
-              Comece grátis.
+              {t('homepage.modules.title')}
               <br />
-              <span className="text-slate-500">Cresça quando quiser.</span>
+              <span className="text-slate-500">{t('homepage.modules.subtitle')}</span>
             </h2>
-            <p className="text-slate-500 text-base max-w-md mx-auto">
-              O plano Free já é poderoso. Quando você precisar de mais, o Pro custa menos que um café por semana.
-            </p>
-          </InView>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
-            {PLANS.map((plan, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative rounded-3xl border p-8 ${plan.color} ${
-                  plan.highlight
-                    ? 'bg-gradient-to-b from-indigo-500/5 to-purple-500/5'
-                    : 'bg-white/[0.02]'
-                }`}
-              >
-                {plan.highlight && (
-                  <>
+          <div className="relative select-none">
+            {/* Edge fades */}
+            <div
+              className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              style={{ background: 'linear-gradient(to right, #0a091e, transparent)' }}
+            />
+            <div
+              className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              style={{ background: 'linear-gradient(to left, #0a091e, transparent)' }}
+            />
+
+            {/* Row 1 — left */}
+            <div className="overflow-hidden mb-3">
+              <div className="carousel-track-left flex">
+                {carouselA.map((mod, i) => {
+                  const Icon = ICON_MAP[mod.icon] || Layers;
+                  return (
                     <div
-                      className="absolute inset-0 rounded-3xl pointer-events-none"
-                      style={{ boxShadow: '0 0 60px rgba(129,140,248,0.12)' }}
-                    />
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full whitespace-nowrap shadow-lg">
-                      {plan.badge}
-                    </div>
-                  </>
-                )}
-
-                <div className="mb-6">
-                  <p className="text-sm font-bold text-slate-500 mb-1">{plan.name}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span
-                      className="text-4xl font-black text-white"
-                      
+                      key={`a-${mod.id}-${i}`}
+                      className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border mx-2 ${mod.bg} ${mod.border}`}
+                      style={{ minWidth: '195px' }}
                     >
-                      {plan.price}
-                    </span>
-                    <span className="text-sm text-slate-500">{plan.per}</span>
-                  </div>
-                  {plan.otherPrices && (
-                    <div className="flex gap-3 mt-2">
-                      {plan.otherPrices.map((op, j) => (
-                        <span key={j} className="text-xs text-slate-400">
-                          {op.label}: <span className="text-slate-500">{op.price}</span>
-                        </span>
-                      ))}
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${mod.bg} border ${mod.border}`}>
+                        <Icon size={15} className={mod.color} strokeWidth={1.5} />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-bold leading-tight ${mod.color}`}>{t(`modules.${mod.id}.title`)}</div>
+                        <div className="text-[9px] text-slate-600 mt-0.5 truncate">
+                          {mod.soon ? t('common.soon') : t(`modules.${mod.id}.tagline`)}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Row 2 — right */}
+            <div className="overflow-hidden">
+              <div className="carousel-track-right flex" style={{ transform: 'translateX(-50%)' }}>
+                {carouselB.map((mod, i) => {
+                  const Icon = ICON_MAP[mod.icon] || Layers;
+                  return (
+                    <div
+                      key={`b-${mod.id}-${i}`}
+                      className={`flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-2xl border mx-2 ${mod.bg} ${mod.border}`}
+                      style={{ minWidth: '195px' }}
+                    >
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${mod.bg} border ${mod.border}`}>
+                        <Icon size={15} className={mod.color} strokeWidth={1.5} />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-bold leading-tight ${mod.color}`}>{t(`modules.${mod.id}.title`)}</div>
+                        <div className="text-[9px] text-slate-600 mt-0.5 truncate">
+                          {mod.soon ? t('common.soon') : t(`modules.${mod.id}.tagline`)}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <InView className="text-center mt-12 px-6 sm:px-8">
+            <Link
+              href="/modulos"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group"
+            >
+              {t('homepage.modules.viewAll')}
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </InView>
+        </section>
+
+        {/* ── 3–6. FEATURE SECTIONS — centralizado, imagem abaixo ─────────────── */}
+        {FEATURE_SECTIONS.map((section, si) => (
+          <section key={section.id} id={section.id} className="relative py-14 px-6 sm:px-8 overflow-hidden" style={{ scrollMarginTop: '80px' }}>
+            {/* Ambient glow */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full opacity-[0.055]"
+                style={{ background: `radial-gradient(ellipse, rgba(${section.accentRgb},1) 0%, transparent 65%)` }}
+              />
+            </div>
+
+            <div className="max-w-4xl mx-auto relative z-10">
+              {/* ── Texto — centralizado ── */}
+              <InView className="text-center mb-10">
+                <div
+                  className={`inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full border mb-6 ${section.bg} ${section.border} ${section.color}`}
+                >
+                  {section.eyebrow}
+                </div>
+
+                <h2
+                  className="font-black tracking-tight mb-5"
+                  style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.875rem)' }}
+                >
+                  {section.titleLine1}
+                  <br />
+                  <span className="text-slate-400">{section.titleLine2}</span>
+                </h2>
+
+                <p className="text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto mb-6">
+                  {section.description}
+                </p>
+
+                {/* ── Feature badges — grid 2 colunas ── */}
+                <div
+                  className="feature-grid mb-6 mx-auto"
+                  style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 260px))', justifyContent: 'center', gap: '0.5rem' }}
+                >
+                  {section.features.map(({ icon: FeatureIcon, text }, fi) => (
+                    <div
+                      key={fi}
+                      className={`feature-badge flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold ${section.bg} ${section.border} ${section.color}`}
+                    >
+                      <FeatureIcon size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
+                      {text}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Limite Free / Pro */}
+                <div className="flex gap-2.5 justify-center flex-wrap">
+                  <span className="text-xs font-semibold text-slate-500 bg-white/[0.04] border border-white/10 px-4 py-1.5 rounded-full whitespace-nowrap">
+                    Free: {section.limit.free}
+                  </span>
+                  <span
+                    className={`text-xs font-semibold px-4 py-1.5 rounded-full border whitespace-nowrap ${section.bg} ${section.border} ${section.color}`}
+                  >
+                    Pro: {section.limit.pro}
+                  </span>
+                </div>
+              </InView>
+
+              {/* ── Imagem — sempre abaixo, substitua src ── */}
+              <InView delay={0.1}>
+                <div
+                  className={`rounded-2xl overflow-hidden border ${section.border} bg-white/[0.02]`}
+                  style={{
+                    boxShadow: `0 0 60px rgba(${section.accentRgb},0.08)`,
+                    animation: 'imageFloat 4s ease-in-out infinite',
+                    animationDelay: `${si * 0.7}s`,
+                  }}
+                >
+                  {section.images ? (
+                    <ImageCarousel images={section.images} />
+                  ) : section.imgSrc ? (
+                    <img
+                      src={section.imgSrc}
+                      alt={`Screenshot — ${section.eyebrow}`}
+                      className="w-full block"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div
+                      className={`flex items-center justify-center flex-col gap-3 py-24 ${section.bg}`}
+                      style={{ minHeight: '260px' }}
+                    >
+                      <LucideIcons.Image size={48} className={`opacity-25 ${section.color}`} />
+                      <p className="text-xs text-slate-600 text-center">Screenshot em breve</p>
                     </div>
                   )}
                 </div>
+              </InView>
+            </div>
+          </section>
+        ))}
 
-                <a
-                  href="https://app.cursar.me/register"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`block w-full py-3.5 rounded-2xl text-sm font-bold text-center transition-all hover:scale-[1.02] active:scale-[0.98] mb-6 ${
-                    plan.highlight
-                      ? 'text-white hover:shadow-lg hover:shadow-indigo-500/25'
-                      : plan.ctaStyle
-                  }`}
-                  style={
-                    plan.highlight
-                      ? { background: 'linear-gradient(135deg, #818cf8, #c084fc)' }
-                      : {}
-                  }
+        {/* ── 7. PRICING ───────────────────────────────────────────────────────── */}
+        <section id="precos" className="relative py-24 px-6 sm:px-8" style={{ scrollMarginTop: '80px' }}>
+          <div className="max-w-4xl mx-auto">
+            <InView className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+                <Sparkles size={12} />
+                {t('homepage.pricing.badge')}
+              </div>
+              <h2
+                className="text-3xl sm:text-4xl font-black tracking-tight mb-4"
+
+              >
+                {t('homepage.pricing.title')}
+                <br />
+                <span className="text-slate-500">{t('homepage.pricing.subtitle')}</span>
+              </h2>
+              <p className="text-slate-500 text-base max-w-md mx-auto">
+                {t('homepage.pricing.description')}
+              </p>
+            </InView>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+              {PLANS.map((plan, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className={`relative rounded-3xl border p-8 ${plan.color} ${plan.highlight
+                      ? 'bg-gradient-to-b from-indigo-500/5 to-purple-500/5'
+                      : 'bg-white/[0.02]'
+                    }`}
                 >
-                  {plan.cta}
-                </a>
-
-                <ul className="flex flex-col gap-3">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3 text-sm">
-                      <Check
-                        size={15}
-                        className={`${
-                          plan.highlight ? 'text-indigo-400' : 'text-slate-500'
-                        } mt-0.5 flex-shrink-0`}
+                  {plan.highlight && (
+                    <>
+                      <div
+                        className="absolute inset-0 rounded-3xl pointer-events-none"
+                        style={{ boxShadow: '0 0 60px rgba(129,140,248,0.12)' }}
                       />
-                      <span className={plan.highlight ? 'text-slate-300' : 'text-slate-500'}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full whitespace-nowrap shadow-lg">
+                        {plan.badge}
+                      </div>
+                    </>
+                  )}
+
+                  <div className="mb-6">
+                    <p className="text-sm font-bold text-slate-500 mb-1">{plan.name}</p>
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className="text-4xl font-black text-white"
+
+                      >
+                        {plan.price}
+                      </span>
+                      <span className="text-sm text-slate-500">{plan.per}</span>
+                    </div>
+                    {plan.otherPrices && (
+                      <div className="flex gap-3 mt-2">
+                        {plan.otherPrices.map((op, j) => (
+                          <span key={j} className="text-xs text-slate-400">
+                            {op.label}: <span className="text-slate-500">{op.price}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <a
+                    href="https://app.cursar.me/register"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block w-full py-3.5 rounded-2xl text-sm font-bold text-center transition-all hover:scale-[1.02] active:scale-[0.98] mb-6 ${plan.highlight
+                        ? 'text-white hover:shadow-lg hover:shadow-indigo-500/25'
+                        : plan.ctaStyle
+                      }`}
+                    style={
+                      plan.highlight
+                        ? { background: 'linear-gradient(135deg, #818cf8, #c084fc)' }
+                        : {}
+                    }
+                  >
+                    {plan.cta}
+                  </a>
+
+                  <ul className="flex flex-col gap-3">
+                    {plan.features.map((f, j) => (
+                      <li key={j} className="flex items-start gap-3 text-sm">
+                        <Check
+                          size={15}
+                          className={`${plan.highlight ? 'text-indigo-400' : 'text-slate-500'
+                            } mt-0.5 flex-shrink-0`}
+                        />
+                        <span className={plan.highlight ? 'text-slate-300' : 'text-slate-500'}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── FINAL CTA ────────────────────────────────────────────────────────── */}
+        <section className="relative py-32 px-6 sm:px-8">
+          {/* Glow FORA do overflow-hidden — sangra 180px acima da seção, preenchendo a quebra */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 w-[1000px] h-[700px] rounded-full pointer-events-none"
+            style={{ top: '-180px', opacity: 0.22, background: 'radial-gradient(ellipse at 50% 20%, rgba(129,140,248,0.95) 0%, rgba(99,102,241,0.4) 38%, transparent 68%)' }}
+          />
+          {/* Sparkles em container próprio com overflow-hidden */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {[
+              { top: '22%', left: '12%', size: 3, color: '#818cf8', dur: 2.6, delay: 0 },
+              { top: '65%', left: '7%', size: 4, color: '#c084fc', dur: 3.3, delay: 0.9 },
+              { top: '30%', right: '10%', size: 3, color: '#818cf8', dur: 2.9, delay: 0.4 },
+              { top: '70%', right: '18%', size: 4, color: '#f472b6', dur: 3.6, delay: 1.5 },
+              { top: '12%', left: '42%', size: 2, color: '#a78bfa', dur: 2.2, delay: 1.1 },
+              { top: '80%', left: '55%', size: 3, color: '#c084fc', dur: 3.0, delay: 0.6 },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  top: s.top, left: s.left, right: s.right,
+                  width: s.size, height: s.size,
+                  background: s.color,
+                  boxShadow: `0 0 6px 2px ${s.color}`,
+                  animation: `sparkle ${s.dur}s ease-in-out infinite`,
+                  animationDelay: `${s.delay}s`,
+                }}
+              />
             ))}
           </div>
-        </div>
-      </section>
+          <div className="max-w-3xl mx-auto text-center relative z-10">
+            <InView>
+              <h2
+                className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
 
-      {/* ── FINAL CTA ────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 px-6 sm:px-8">
-        {/* Glow FORA do overflow-hidden — sangra 180px acima da seção, preenchendo a quebra */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 w-[1000px] h-[700px] rounded-full pointer-events-none"
-          style={{ top: '-180px', opacity: 0.22, background: 'radial-gradient(ellipse at 50% 20%, rgba(129,140,248,0.95) 0%, rgba(99,102,241,0.4) 38%, transparent 68%)' }}
-        />
-        {/* Sparkles em container próprio com overflow-hidden */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[
-            { top: '22%', left: '12%',  size: 3, color: '#818cf8', dur: 2.6, delay: 0    },
-            { top: '65%', left: '7%',   size: 4, color: '#c084fc', dur: 3.3, delay: 0.9  },
-            { top: '30%', right: '10%', size: 3, color: '#818cf8', dur: 2.9, delay: 0.4  },
-            { top: '70%', right: '18%', size: 4, color: '#f472b6', dur: 3.6, delay: 1.5  },
-            { top: '12%', left: '42%',  size: 2, color: '#a78bfa', dur: 2.2, delay: 1.1  },
-            { top: '80%', left: '55%',  size: 3, color: '#c084fc', dur: 3.0, delay: 0.6  },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                top: s.top, left: s.left, right: s.right,
-                width: s.size, height: s.size,
-                background: s.color,
-                boxShadow: `0 0 6px 2px ${s.color}`,
-                animation: `sparkle ${s.dur}s ease-in-out infinite`,
-                animationDelay: `${s.delay}s`,
-              }}
-            />
-          ))}
-        </div>
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <InView>
-            <h2
-              className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
-              
-            >
-              Pronto para organizar
-              <br />
-              sua vida de vez?
-            </h2>
-            <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-              Crie sua conta grátis agora. Em menos de 2 minutos você já tem seu perfil público, seus módulos
-              configurados e sua jornada em movimento.
-            </p>
-            <a
-              href="https://app.cursar.me/register"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-10 py-5 rounded-2xl text-base font-bold text-white transition-all duration-200 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30 active:scale-[0.98]"
-              style={{ background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
-            >
-              Criar minha conta grátis
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </a>
-            <p className="mt-6 text-xs text-slate-400">
-              Sem cartão de crédito · Cancele quando quiser · Seus dados são seus
-            </p>
-          </InView>
-        </div>
-      </section>
+              >
+                {t('homepage.cta.title')}
+                <br />
+                {t('homepage.cta.titleLine2')}
+              </h2>
+              <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+                {t('homepage.cta.subtitle')}
+              </p>
+              <a
+                href="https://app.cursar.me/register"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-10 py-5 rounded-2xl text-base font-bold text-white transition-all duration-200 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30 active:scale-[0.98]"
+                style={{ background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
+              >
+                {t('homepage.cta.button')}
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </a>
+              <p className="mt-6 text-xs text-slate-400">
+                {t('homepage.cta.disclaimer')}
+              </p>
+            </InView>
+          </div>
+        </section>
 
-      <style>{`
+        <style>{`
         /* Badges sempre centralizados */
         .feature-badge {
           justify-content: center;
@@ -1004,7 +978,7 @@ export default function HomePage() {
           will-change: transform;
         }
       `}</style>
-    </div>
+      </div>
     </>
   );
 }
