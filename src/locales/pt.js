@@ -2,6 +2,8 @@ export const pt = {
   common: {
     startFree: 'Começar grátis',
     login: 'Entrar',
+    access: 'Acessar',
+    download: 'Download',
     home: 'Início',
     modules: 'Módulos',
     updates: 'Atualizações',
@@ -441,5 +443,62 @@ export const pt = {
         links: { portfolio: 'Portfólio no Cursar' },
       },
     },
+  },
+  downloadPage: {
+    badge: 'Multiplataforma',
+    title: 'O Cursar em todos',
+    titleGray: 'os seus dispositivos.',
+    subtitle: 'Seus dados sincronizam em tempo real entre todas as versões. Escolha a que funciona melhor pra você.',
+    detected: 'Detectamos',
+    detectedSuffix: 'no seu sistema',
+    benefits: {
+      sync: { title: 'Sincronia em tempo real', desc: 'Seus dados em todos os dispositivos.' },
+      free: { title: '100% gratuito pra começar', desc: 'Sem cartão de crédito, sem pegadinhas.' },
+      langs: { title: 'Em 4 idiomas', desc: 'Português, Inglês, Espanhol e Francês.' },
+    },
+    included: {
+      eyebrow: 'O que vem dentro',
+      title: '8 módulos. Um único app.',
+      subtitle: 'Pare de alternar entre 10 ferramentas. O Cursar reúne tudo num só lugar — do estudo ao perfil profissional.',
+      cta: 'Ver todos os módulos em detalhe',
+    },
+    platforms: {
+      windows: {
+        title: 'Windows',
+        description: 'App nativo para Windows. Instale no seu PC e acesse o Cursar completo sem precisar abrir o navegador.',
+        button: 'Baixar para Windows',
+        status: 'Disponível · v0.0.6',
+        badge: 'v0.0.6 · Estável',
+        meta: 'Windows 10 ou superior',
+        feature1: 'Instalação local (.exe)',
+        feature2: 'Sem abrir o browser',
+        feature3: 'Atalho no desktop',
+      },
+      web: {
+        title: 'Web & PWA',
+        description: 'Acesse pelo navegador ou instale como app — funciona em qualquer dispositivo, sistema ou tela.',
+        button: 'Acessar plataforma',
+        status: 'Recomendado',
+        badge: 'Recomendado',
+        meta: 'Instala como app em qualquer lugar',
+        feature1: 'Chrome, Edge & Firefox',
+        feature2: 'Instale em qualquer dispositivo',
+        feature3: 'Sempre atualizado',
+      },
+      android: {
+        title: 'Android',
+        description: 'Versão de teste em andamento. Logo estará disponível oficialmente na Play Store.',
+        button: 'Em breve na Play Store',
+        status: 'Versão de teste',
+        badge: 'Beta',
+      },
+      ios: {
+        title: 'iOS',
+        description: 'Ainda não começamos o app nativo, mas já está nos planos. Por enquanto, use pelo Safari.',
+        button: 'Em desenvolvimento',
+        status: 'Em breve',
+        badge: 'Em breve',
+      }
+    }
   },
 };

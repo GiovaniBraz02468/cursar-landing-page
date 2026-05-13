@@ -2,6 +2,8 @@ export const es = {
   common: {
     startFree: 'Comenzar gratis',
     login: 'Entrar',
+    access: 'Acceder',
+    download: 'Descargar',
     home: 'Inicio',
     modules: 'Módulos',
     updates: 'Novedades',
@@ -401,7 +403,7 @@ export const es = {
       },
       pro: {
         name: 'Pro',
-        price: '€ 9,90',
+        price: '€ 3,33',
         per: 'por mes en plan anual',
         badge: 'Mejor relación calidad-precio',
         cta: 'Suscribirse a Pro ahora',
@@ -416,8 +418,8 @@ export const es = {
           visitors: 'Ve quién visitó tu perfil',
         },
         otherPrices: {
-          monthly: { label: 'Mensual', price: '€ 12,99/mes' },
-          semiannual: { label: 'Semestral', price: '€ 10,99/mes' },
+          monthly: { label: 'Mensual', price: '€ 4,49/mes' },
+          semiannual: { label: 'Semestral', price: '€ 3,83/mes' },
         },
       },
     },
@@ -440,5 +442,62 @@ export const es = {
         links: { portfolio: 'Portafolio en Cursar' },
       },
     },
+  },
+  downloadPage: {
+    badge: 'Multiplataforma',
+    title: 'Cursar en todos',
+    titleGray: 'tus dispositivos.',
+    subtitle: 'Tus datos se sincronizan en tiempo real entre todas las versiones. Elige la que mejor se adapte a ti.',
+    detected: 'Detectamos',
+    detectedSuffix: 'en tu sistema',
+    benefits: {
+      sync: { title: 'Sincronía en tiempo real', desc: 'Tus datos en todos los dispositivos.' },
+      free: { title: '100% gratis para empezar', desc: 'Sin tarjeta de crédito, sin trucos.' },
+      langs: { title: 'En 4 idiomas', desc: 'Portugués, Inglés, Español y Francés.' },
+    },
+    included: {
+      eyebrow: 'Lo que viene dentro',
+      title: '8 módulos. Una sola app.',
+      subtitle: 'Deja de alternar entre 10 herramientas. Cursar reúne todo en un solo lugar — del estudio al perfil profesional.',
+      cta: 'Ver todos los módulos en detalle',
+    },
+    platforms: {
+      windows: {
+        title: 'Windows',
+        description: 'App nativa para Windows. Instala en tu PC y accede al Cursar completo sin necesitar un navegador.',
+        button: 'Descargar para Windows',
+        status: 'Disponible · v0.0.6',
+        badge: 'v0.0.6 · Estable',
+        meta: 'Windows 10 o superior',
+        feature1: 'Instalación local (.exe)',
+        feature2: 'Sin abrir el navegador',
+        feature3: 'Acceso directo en el escritorio',
+      },
+      web: {
+        title: 'Web & PWA',
+        description: 'Accede desde el navegador o instala como app — funciona en cualquier dispositivo, sistema o pantalla.',
+        button: 'Acceder a la plataforma',
+        status: 'Recomendado',
+        badge: 'Recomendado',
+        meta: 'Instala como app en cualquier lugar',
+        feature1: 'Chrome, Edge y Firefox',
+        feature2: 'Instala en cualquier dispositivo',
+        feature3: 'Siempre actualizado',
+      },
+      android: {
+        title: 'Android',
+        description: 'Versión de prueba en curso. Próximamente disponible oficialmente en Play Store.',
+        button: 'Próximamente en Play Store',
+        status: 'Versión de prueba',
+        badge: 'Beta',
+      },
+      ios: {
+        title: 'iOS',
+        description: 'Aún no hemos comenzado la app nativa, pero está en los planes. Por ahora, usa Safari.',
+        button: 'En desarrollo',
+        status: 'Próximamente',
+        badge: 'Pronto',
+      }
+    }
   },
 };

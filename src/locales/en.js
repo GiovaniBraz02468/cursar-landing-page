@@ -2,6 +2,8 @@ export const en = {
   common: {
     startFree: 'Get started free',
     login: 'Log in',
+    access: 'Access',
+    download: 'Download',
     home: 'Home',
     modules: 'Modules',
     updates: 'Updates',
@@ -401,7 +403,7 @@ export const en = {
       },
       pro: {
         name: 'Pro',
-        price: '$ 9.90',
+        price: '$ 3.74',
         per: 'per month on annual plan',
         badge: 'Best value',
         cta: 'Subscribe to Pro now',
@@ -416,8 +418,8 @@ export const en = {
           visitors: 'See who visited your profile',
         },
         otherPrices: {
-          monthly: { label: 'Monthly', price: '$ 12.99/month' },
-          semiannual: { label: 'Semiannual', price: '$ 10.99/month' },
+          monthly: { label: 'Monthly', price: '$ 4.99/month' },
+          semiannual: { label: 'Semiannual', price: '$ 4.16/month' },
         },
       },
     },
@@ -440,5 +442,62 @@ export const en = {
         links: { portfolio: 'Portfolio on Cursar' },
       },
     },
+  },
+  downloadPage: {
+    badge: 'Multiplatform',
+    title: 'Cursar on all',
+    titleGray: 'your devices.',
+    subtitle: 'Your data syncs in real-time across all versions. Choose what works best for you.',
+    detected: 'We detected',
+    detectedSuffix: 'on your system',
+    benefits: {
+      sync: { title: 'Real-time sync', desc: 'Your data across every device.' },
+      free: { title: '100% free to start', desc: 'No credit card, no tricks.' },
+      langs: { title: 'In 4 languages', desc: 'Portuguese, English, Spanish and French.' },
+    },
+    included: {
+      eyebrow: "What's inside",
+      title: '8 modules. One single app.',
+      subtitle: 'Stop juggling 10 tools. Cursar brings it all into one place — from studying to your professional profile.',
+      cta: 'See all modules in detail',
+    },
+    platforms: {
+      windows: {
+        title: 'Windows',
+        description: 'Native app for Windows. Install on your PC and access the full Cursar without opening a browser.',
+        button: 'Download for Windows',
+        status: 'Available · v0.0.6',
+        badge: 'v0.0.6 · Stable',
+        meta: 'Windows 10 or higher',
+        feature1: 'Local install (.exe)',
+        feature2: 'No browser needed',
+        feature3: 'Desktop shortcut',
+      },
+      web: {
+        title: 'Web & PWA',
+        description: 'Access via browser or install as an app — works on any device, OS or screen.',
+        button: 'Access platform',
+        status: 'Recommended',
+        badge: 'Recommended',
+        meta: 'Install as an app anywhere',
+        feature1: 'Chrome, Edge & Firefox',
+        feature2: 'Install on any device',
+        feature3: 'Always up to date',
+      },
+      android: {
+        title: 'Android',
+        description: 'Test version in progress. Coming soon officially on the Play Store.',
+        button: 'Coming soon on Play Store',
+        status: 'Beta testing',
+        badge: 'Beta',
+      },
+      ios: {
+        title: 'iOS',
+        description: "We haven't started the native app yet, but it's in the plans. For now, use Safari.",
+        button: 'In development',
+        status: 'Coming soon',
+        badge: 'Soon',
+      }
+    }
   },
 };
