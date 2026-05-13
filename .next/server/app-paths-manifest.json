@@ -3,9 +3,9 @@
   "/robots.txt/route": "app/robots.txt/route.js",
   "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/page": "app/page.js",
-  "/modulos/page": "app/modulos/page.js",
+  "/download/page": "app/download/page.js",
   "/atualizacoes/page": "app/atualizacoes/page.js",
   "/atualizacoes/[id]/page": "app/atualizacoes/[id]/page.js",
-  "/download/page": "app/download/page.js",
-  "/suporte/page": "app/suporte/page.js"
+  "/suporte/page": "app/suporte/page.js",
+  "/modulos/page": "app/modulos/page.js"
 }

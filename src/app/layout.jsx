@@ -1,7 +1,13 @@
+import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '../components/Navbar'
 import PostHogProvider from '../components/PostHogProvider'
 import { LanguageProvider } from '../context/LanguageContext'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'Cursar.me — Organize sua vida estudantil, social e profissional',
@@ -42,10 +48,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" className={inter.className} suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
         <script
           dangerouslySetInnerHTML={{
             __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(reg){reg.unregister()})})}`,

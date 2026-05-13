@@ -323,7 +323,7 @@ function ImageCarousel({ images }) {
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             style={{ objectFit: 'cover' }}
-            priority={i === 0 && src.includes('trabalho')}
+            priority={i === 0}
           />
         </div>
       ))}
@@ -749,6 +749,7 @@ export default function HomePage() {
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         style={{ objectFit: 'cover' }}
+                        priority={si === 0}
                       />
                     </div>
                   ) : (

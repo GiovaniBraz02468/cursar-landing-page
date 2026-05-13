@@ -3,9 +3,9 @@
   "/robots.txt/route": "/robots.txt",
   "/sitemap.xml/route": "/sitemap.xml",
   "/page": "/",
-  "/modulos/page": "/modulos",
+  "/download/page": "/download",
   "/atualizacoes/page": "/atualizacoes",
   "/atualizacoes/[id]/page": "/atualizacoes/[id]",
-  "/download/page": "/download",
-  "/suporte/page": "/suporte"
+  "/suporte/page": "/suporte",
+  "/modulos/page": "/modulos"
 }
