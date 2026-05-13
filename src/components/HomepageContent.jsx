@@ -2,6 +2,7 @@
 // pages/HomePage.jsx
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 
 const imgTrabalho = '/assets/trabalho.png';
@@ -297,27 +298,34 @@ function ProfileMockup() {
 // ── Carousel de imagens ───────────────────────────────────────────────────────
 function ImageCarousel({ images }) {
   const [current, setCurrent] = useState(0);
+  const { t } = useLanguage();
+  
   useEffect(() => {
     const t = setInterval(() => setCurrent((c) => (c + 1) % images.length), 3000);
     return () => clearInterval(t);
   }, [images.length]);
+  
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', overflow: 'hidden' }}>
       {images.map((src, i) => (
-        <img
+        <div
           key={i}
-          src={src}
           style={{
-            display: 'block',
-            width: '100%',
-            objectFit: 'cover',
-            position: i === 0 ? 'relative' : 'absolute',
-            top: 0, left: 0,
-            height: i === 0 ? 'auto' : '100%',
+            position: 'absolute',
+            inset: 0,
             opacity: i === current ? 1 : 0,
             transition: 'opacity 0.7s ease-in-out',
           }}
-        />
+        >
+          <Image
+            src={src}
+            alt={t('common.screenshot') || 'Screenshot do sistema'}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: 'cover' }}
+            priority={i === 0 && src.includes('trabalho')}
+          />
+        </div>
       ))}
     </div>
   );
@@ -520,10 +528,8 @@ export default function HomePage() {
               style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', justifyContent: 'center', alignItems: 'center', animation: 'heroFadeUp 0.6s ease both', animationDelay: '0.3s' }}
             >
               {/* Começar grátis */}
-              <a
-                href="https://app.cursar.me/register"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/download"
                 className="group flex items-center gap-2 text-sm font-bold text-white transition-all duration-200 active:scale-[0.97]"
                 style={{
                   padding: '0.75rem 1.75rem',
@@ -535,9 +541,9 @@ export default function HomePage() {
                 onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 45px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1.04)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 28px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                {t('common.startFree')}
+                {t('common.download')}
                 <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
 
               {/* Ver todos os módulos — borda gradiente */}
               <div style={{
@@ -736,12 +742,15 @@ export default function HomePage() {
                   {section.images ? (
                     <ImageCarousel images={section.images} />
                   ) : section.imgSrc ? (
-                    <img
-                      src={section.imgSrc}
-                      alt={`Screenshot — ${section.eyebrow}`}
-                      className="w-full block"
-                      style={{ objectFit: 'cover' }}
-                    />
+                    <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+                      <Image
+                        src={section.imgSrc}
+                        alt={`${t('common.screenshot')} — ${section.eyebrow}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
                   ) : (
                     <div
                       className={`flex items-center justify-center flex-col gap-3 py-24 ${section.bg}`}
@@ -825,10 +834,8 @@ export default function HomePage() {
                     )}
                   </div>
 
-                  <a
-                    href="https://app.cursar.me/register"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/download"
                     className={`block w-full py-3.5 rounded-2xl text-sm font-bold text-center transition-all hover:scale-[1.02] active:scale-[0.98] mb-6 ${plan.highlight
                         ? 'text-white hover:shadow-lg hover:shadow-indigo-500/25'
                         : plan.ctaStyle
@@ -840,7 +847,7 @@ export default function HomePage() {
                     }
                   >
                     {plan.cta}
-                  </a>
+                  </Link>
 
                   <ul className="flex flex-col gap-3">
                     {plan.features.map((f, j) => (
@@ -904,16 +911,14 @@ export default function HomePage() {
               <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
                 {t('homepage.cta.subtitle')}
               </p>
-              <a
-                href="https://app.cursar.me/register"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/download"
                 className="group inline-flex items-center gap-2 px-10 py-5 rounded-2xl text-base font-bold text-white transition-all duration-200 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30 active:scale-[0.98]"
                 style={{ background: 'linear-gradient(135deg, #818cf8, #c084fc)' }}
               >
-                {t('homepage.cta.button')}
+                {t('common.download')}
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
               <p className="mt-6 text-xs text-slate-400">
                 {t('homepage.cta.disclaimer')}
               </p>

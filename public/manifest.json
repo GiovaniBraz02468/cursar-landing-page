@@ -1,0 +1,17 @@
+{
+  "name": "Cursar.me",
+  "short_name": "Cursar",
+  "description": "Organize sua vida estudantil, social e profissional em um único lugar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a091e",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

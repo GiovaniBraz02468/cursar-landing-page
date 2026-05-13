@@ -10,6 +10,7 @@ export default function sitemap() {
     { url: `${base}/modulos`,       lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/atualizacoes`,  lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.8 },
     { url: `${base}/suporte`,       lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/download`,      lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ]
 
   const updateRoutes = UPDATES.map((update) => ({

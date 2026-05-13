@@ -12,12 +12,15 @@ export const pt = {
     daysRemaining: 'dias restantes',
     views: 'visualizações',
     likes: 'curtidas',
+    screenshot: 'Screenshot do sistema',
+    close: 'Fechar',
   },
   navbar: {
     links: { home: 'Início', modules: 'Módulos', updates: 'Atualizações', support: 'Suporte' },
     language: 'Selecione o idioma',
     featured: 'Em destaque',
     featuredLinks: { works: 'Módulo Trabalhos', portfolio: 'Portfólio', document: 'Documento', pricing: 'Planos e preços' },
+    menu: 'Menu de navegação',
   },
   modules: {
     aprendizado: {

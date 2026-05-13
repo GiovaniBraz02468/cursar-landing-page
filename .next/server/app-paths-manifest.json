@@ -1,7 +1,4 @@
 {
   "/page": "app/page.js",
-  "/atualizacoes/page": "app/atualizacoes/page.js",
-  "/atualizacoes/[id]/page": "app/atualizacoes/[id]/page.js",
-  "/modulos/page": "app/modulos/page.js",
-  "/suporte/page": "app/suporte/page.js"
+  "/modulos/page": "app/modulos/page.js"
 }

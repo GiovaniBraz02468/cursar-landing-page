@@ -12,12 +12,15 @@ export const fr = {
     daysRemaining: 'jours restants',
     views: 'vues',
     likes: "j'aime",
+    screenshot: 'Capture d’écran du système',
+    close: 'Fermer',
   },
   navbar: {
     links: { home: 'Accueil', modules: 'Modules', updates: 'Mises à jour', support: 'Support' },
     language: 'Choisir la langue',
     featured: 'À la une',
     featuredLinks: { works: 'Module Travaux', portfolio: 'Portfolio', document: 'Document', pricing: 'Plans et tarifs' },
+    menu: 'Menu de navigation',
   },
   modules: {
     aprendizado: {

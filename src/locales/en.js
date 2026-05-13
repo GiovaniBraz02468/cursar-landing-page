@@ -12,12 +12,15 @@ export const en = {
     daysRemaining: 'days remaining',
     views: 'views',
     likes: 'likes',
+    screenshot: 'System screenshot',
+    close: 'Close',
   },
   navbar: {
     links: { home: 'Home', modules: 'Modules', updates: 'Updates', support: 'Support' },
     language: 'Select language',
     featured: 'Featured',
     featuredLinks: { works: 'Works Module', portfolio: 'Portfolio', document: 'Document', pricing: 'Plans & pricing' },
+    menu: 'Navigation menu',
   },
   modules: {
     aprendizado: {

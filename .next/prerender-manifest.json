@@ -1,1 +1,11 @@
-{"version":4,"routes":{"/atualizacoes/v0-0-6":{},"/atualizacoes/v0-0-5":{},"/atualizacoes/v0-0-4":{},"/atualizacoes/v0-0-3":{},"/atualizacoes/v0-0-2":{},"/atualizacoes/v0-0-1":{}},"dynamicRoutes":{"/atualizacoes/[id]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/atualizacoes/[id]","routeRegex":"^\\/atualizacoes\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"638524cbf97df178b8263dabb0e94c2b","previewModeSigningKey":"6d3933db754f2ee2c39f26ee9eee0040cf3b88c6f19b13472984db31ab831cc8","previewModeEncryptionKey":"533765fd83798149203fc5847e9bb41a8b3ea4badb0658bc28127e34088aedfd"}}
+{
+  "version": 4,
+  "routes": {},
+  "dynamicRoutes": {},
+  "notFoundRoutes": [],
+  "preview": {
+    "previewModeId": "cedebb989a73daa3d67e64888c5a832e",
+    "previewModeSigningKey": "93cf78421c36cc6314f366e10ca45309c532e1599057225f7ead46dd42c3bf93",
+    "previewModeEncryptionKey": "efb905926a0d7ad1211db5a56bc07eee885a335d78f23444ff6240aee85b1492"
+  }
+}

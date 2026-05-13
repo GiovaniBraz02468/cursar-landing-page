@@ -69,7 +69,11 @@ function LanguageModal({ isOpen, onClose }) {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#fff' }}>{t('navbar.language')}</h3>
-            <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}>
+            <button 
+              onClick={onClose} 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}
+              aria-label={t('common.close') || 'Fechar'}
+            >
               <X size={18} />
             </button>
           </div>
@@ -217,6 +221,7 @@ export default function Navbar() {
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#cbd5e1'; }}
+                  aria-label={t('navbar.language')}
                 >
                   <Globe size={16} />
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>{lang}</span>
@@ -230,12 +235,10 @@ export default function Navbar() {
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#cbd5e1'; }}
                 >
-                  {t('common.login')}
+                  {t('common.access')}
                 </a>
-                <a
-                  href="https://app.cursar.me/register"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/download"
                   style={{
                     padding: '0.6rem 1.25rem',
                     borderRadius: '0.75rem',
@@ -250,8 +253,8 @@ export default function Navbar() {
                   onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f1'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
                 >
-                  {t('common.startFree')}
-                </a>
+                  {t('common.download')}
+                </Link>
               </div>
             </>
           )}
@@ -273,6 +276,7 @@ export default function Navbar() {
                     cursor: 'pointer',
                     color: '#cbd5e1'
                   }}
+                  aria-label={t('navbar.language')}
                 >
                   <Globe size={18} />
                 </button>
@@ -282,7 +286,7 @@ export default function Navbar() {
                   background: 'none', border: 'none', cursor: 'pointer',
                   color: '#cbd5e1', padding: '0.5rem', borderRadius: '0.75rem',
                 }}
-                aria-label="Abrir menu"
+                aria-label={t('navbar.menu')}
               >
                 <Menu size={22} />
               </button>
@@ -335,6 +339,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setMenuOpen(false)}
                   style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: '0.5rem' }}
+                  aria-label={t('common.close')}
                 >
                   <X size={20} />
                 </button>
@@ -404,16 +409,14 @@ export default function Navbar() {
                   rel="noopener noreferrer"
                   style={{ display: 'block', textAlign: 'center', padding: '0.75rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 700, color: '#cbd5e1', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none' }}
                 >
-                  {t('common.login')}
+                  {t('common.access')}
                 </a>
-                <a
-                  href="https://app.cursar.me/register"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/download"
                   style={{ display: 'block', textAlign: 'center', padding: '0.75rem', borderRadius: '0.875rem', fontSize: '0.875rem', fontWeight: 900, color: '#fff', background: 'linear-gradient(135deg, #818cf8, #c084fc)', textDecoration: 'none' }}
                 >
-                  {t('common.startFree')}
-                </a>
+                  {t('common.download')}
+                </Link>
               </motion.div>
             </motion.div>
           </>
